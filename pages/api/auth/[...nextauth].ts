@@ -1,7 +1,7 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import AzureADProvider from 'next-auth/providers/azure-ad';
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     AzureADProvider({
       clientId: process.env.AZURE_AD_CLIENT_ID as string,
@@ -9,6 +9,12 @@ export const authOptions = {
       tenantId: process.env.AZURE_AD_TENANT_ID as string,
     }),
   ],
+  callbacks: {
+    async jwt({ token }) {
+      token.userRole = 'admin';
+      return token;
+    },
+  },
 };
 
 export default NextAuth(authOptions);

@@ -9,12 +9,7 @@ export const authOptions: NextAuthOptions = {
       tenantId: process.env.AZURE_AD_TENANT_ID as string,
     }),
   ],
-  callbacks: {
-    async jwt({ token }) {
-      token.userRole = 'admin';
-      return token;
-    },
-  },
+  secret: process.env.NEXTAUTH_SECRET as string,
 };
 
 export default NextAuth(authOptions);

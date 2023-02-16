@@ -1,19 +1,25 @@
-import Link from 'next/link';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+
+import LoginButton from './LoginButton';
 
 const Header = () => {
   const { data: session, status } = useSession();
   const loading = status === 'loading';
 
-  const signInHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const signOutHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    signIn();
+    signOut();
   };
 
   return (
     <header>
       <div>
-        <button onClick={signInHandler}>Sign In</button>
+        <h1>STOCK NUM GEN</h1>
+        {status === 'authenticated' ? (
+          <button onClick={signOutHandler}>Sign Out</button>
+        ) : (
+          <LoginButton />
+        )}
       </div>
     </header>
   );

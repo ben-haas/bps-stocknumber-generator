@@ -2,6 +2,7 @@ import { useSession } from 'next-auth/react';
 
 import Head from 'next/head';
 import Header from '@/components/Header';
+import NewNumberForm from '@/components/Numbers/NewNumberForm';
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -16,7 +17,7 @@ export default function Home() {
       </Head>
       <Header />
       <main>
-        <h1>BPS Stock Number Generator</h1>
+        <NewNumberForm />
         <p>{JSON.stringify(session)}</p>
         <p>{JSON.stringify(status)}</p>
       </main>

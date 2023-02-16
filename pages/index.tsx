@@ -18,7 +18,7 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
       </Head>
       <Header />
       <main>
-        <NewNumberForm currentNumber={props.currentNumber}/>
+        <NewNumberForm currentNumber={props.currentNumber} />
         <p>{props.currentNumber}</p>
         <p>{JSON.stringify(session)}</p>
         <p>{JSON.stringify(status)}</p>
@@ -28,9 +28,7 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
 };
 
 export async function getStaticProps() {
-  const client = await MongoClient.connect(
-    'mongodb+srv://bpsadmin:0FyivyqOqshSg72U@cluster0.kjoshiw.mongodb.net/?retryWrites=true&w=majority'
-  );
+  const client = await MongoClient.connect(process.env.MONGODB_URI as string);
 
   const db = client.db('StockNumbers');
   const numbersCollection = db.collection('numbers');

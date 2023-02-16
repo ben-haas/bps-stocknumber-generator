@@ -3,13 +3,14 @@ import { useRef, useState } from 'react';
 import Card from '../UI/Card';
 import classes from './NewNumberForm.module.css';
 
-const NewNumberForm = () => {
-  const [stockNum, setStockNum] = useState(null);
+const NewNumberForm: React.FC<{ currentNumber: number }> = (props) => {
   const [readOnly, setReadOnly] = useState(true);
   const enteredProdLine = useRef<HTMLInputElement>(null);
   const generatedStockNum = useRef<HTMLInputElement>(null);
   const generatedProdCode = useRef<HTMLInputElement>(null);
   const customCheckBox = useRef<HTMLInputElement>(null);
+
+  const nextStockNumber = props.currentNumber + 1;
 
   const checkBoxHandler = () => {
     setReadOnly(!customCheckBox.current!.checked);
@@ -57,7 +58,7 @@ const NewNumberForm = () => {
             id="nextStockNum"
             type="text"
             size={10}
-            defaultValue={stockNum!}
+            defaultValue={nextStockNumber}
             readOnly
           />
         </div>

@@ -1,10 +1,11 @@
 import { useSession } from 'next-auth/react';
+import { MongoClient } from 'mongodb';
 
 import Head from 'next/head';
 import Header from '@/components/Header';
 import NewNumberForm from '@/components/Numbers/NewNumberForm';
 
-export default function Home() {
+const Home: React.FC<{ currentNumber: number }> = (props) => {
   const { data: session, status } = useSession();
 
   return (
@@ -17,10 +18,50 @@ export default function Home() {
       </Head>
       <Header />
       <main>
-        <NewNumberForm />
+        <NewNumberForm currentNumber={props.currentNumber}/>
+        <p>{props.currentNumber}</p>
         <p>{JSON.stringify(session)}</p>
         <p>{JSON.stringify(status)}</p>
       </main>
     </>
   );
+};
+
+export async function getStaticProps() {
+  const client = await MongoClient.connect(
+    'mongodb+srv://bpsadmin:0FyivyqOqshSg72U@cluster0.kjoshiw.mongodb.net/?retryWrites=true&w=majority'
+  );
+
+  const db = client.db('StockNumbers');
+  const numbersCollection = db.collection('numbers');
+
+  const data = await numbersCollection
+    .find()
+    .sort({ stock_number: -1 })
+    .limit(1)
+    .toArray();
+
+  client.close();
+
+  const currentNumber = data[0].stock_number;
+
+  // const numbers = data.map((number) => ({
+  //   stock_number: number.stock_number,
+  //   product_code: number.product_code,
+  //   product_line: number.product_line,
+  //   is_typical: number.is_typical,
+  //   entered_by: number.entered_by,
+  //   created_at: number.created_at.toISOString(),
+  //   last_edited: number.last_edited.toISOString(),
+  // }));
+
+  return {
+    props: {
+      currentNumber: currentNumber,
+      //numbers: numbers,
+    },
+    revalidate: 10,
+  };
 }
+
+export default Home;

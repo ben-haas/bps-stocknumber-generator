@@ -43,6 +43,16 @@
   outline-color: #0d47a1;
 }
 
+.checkbox input {
+  height: 1rem;
+  width: 1rem;
+}
+
+.checkbox label {
+  font-weight: bold;
+  margin-left: 0.5rem;
+}
+
 .actions {
   text-align: right;
 }

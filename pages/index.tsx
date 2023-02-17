@@ -7,8 +7,8 @@ import Header from '@/components/Header';
 import NewNumberForm from '@/components/Numbers/NewNumberForm';
 
 const Home: React.FC<{ currentNumber: number }> = (props) => {
-  const { data: session, status } = useSession();
-  //const [stockNumber, setStockNumber] = useState(props.currentNumber);
+  const { data: session } = useSession();
+  const [currentNumber, setCurrentNumber] = useState(props.currentNumber);
 
   const addNumberHandler = async (enteredNumberData: {}) => {
     const response = await fetch('/api/new-number', {
@@ -20,7 +20,7 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
     });
 
     const data = await response.json();
-    //setStockNumber(stockNumber + 1);
+    setCurrentNumber(currentNumber + 1);
 
     console.log(data);
   };
@@ -36,12 +36,11 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
       <Header />
       <main>
         <NewNumberForm
-          currentNumber={props.currentNumber}
+          currentNumber={currentNumber}
           onAddNumber={addNumberHandler}
         />
         <p>{props.currentNumber}</p>
         <p>{JSON.stringify(session)}</p>
-        <p>{JSON.stringify(status)}</p>
       </main>
     </>
   );
@@ -55,7 +54,7 @@ export async function getStaticProps() {
 
   const data = await numbersCollection
     .find()
-    .sort({ stock_number: -1 })
+    .sort({ 'data.stock_number': -1 })
     .limit(1)
     .toArray();
 
@@ -63,20 +62,9 @@ export async function getStaticProps() {
 
   const currentNumber = data[0].data.stock_number;
 
-  // const numbers = data.map((number) => ({
-  //   stock_number: number.stock_number,
-  //   product_code: number.product_code,
-  //   product_line: number.product_line,
-  //   is_typical: number.is_typical,
-  //   entered_by: number.entered_by,
-  //   created_at: number.created_at.toISOString(),
-  //   last_edited: number.last_edited.toISOString(),
-  // }));
-
   return {
     props: {
       currentNumber: currentNumber,
-      //numbers: numbers,
     },
     revalidate: 10,
   };

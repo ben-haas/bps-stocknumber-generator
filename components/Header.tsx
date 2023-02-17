@@ -1,10 +1,13 @@
 import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
 
-import LoginButton from './LoginButton';
+import classes from './Header.module.css';
 
 const Header = () => {
-  const { data: session, status } = useSession();
-  const loading = status === 'loading';
+  const { data: session } = useSession();
+
+  const user = session?.user!.name;
+  const userGreeting = `Hey, ${user?.substring(0, user.indexOf(' '))}!`;
 
   const signOutHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -12,15 +15,23 @@ const Header = () => {
   };
 
   return (
-    <header>
-      <div>
-        <h1>STOCK NUM GEN</h1>
-        {status === 'authenticated' ? (
-          <button onClick={signOutHandler}>Sign Out</button>
-        ) : (
-          <LoginButton />
-        )}
-      </div>
+    <header className={classes.header}>
+      <div className={classes.user}>{userGreeting}</div>
+      <nav>
+        <ul>
+          <li>
+            <Link href={'/'}>New Number</Link>
+          </li>
+          <li>
+            <Link href={'/'}>View Items</Link>
+          </li>
+          <li>
+            <button className="btn" onClick={signOutHandler}>
+              Logout
+            </button>
+          </li>
+        </ul>
+      </nav>
     </header>
   );
 };

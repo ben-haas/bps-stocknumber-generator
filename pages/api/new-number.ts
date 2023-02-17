@@ -4,7 +4,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     const data = req.body;
-    console.log(data);
 
     const client = await MongoClient.connect(process.env.MONGODB_URI as string);
     const db = client.db('StockNumbers');
@@ -12,10 +11,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const result = await numbersCollection.insertOne({ data });
 
-    console.log(result);
-
     client.close();
-    res.status(201).json({ message: 'Number Inserted' });
+    res.status(201).json({ message: 'Number Inserted', result: result });
   }
 };
 

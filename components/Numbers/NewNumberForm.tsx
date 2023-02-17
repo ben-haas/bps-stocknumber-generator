@@ -43,9 +43,10 @@ const NewNumberForm: React.FC<{
       edited: edited.toISOString(),
     };
 
-    console.log(numberData);
-
     props.onAddNumber(numberData);
+
+    enteredProdLine.current!.value = '';
+    generatedProdCode.current!.value = '';
   };
 
   const onProdLineChangeHandler = () => {
@@ -70,7 +71,7 @@ const NewNumberForm: React.FC<{
             ref={enteredProdLine}
             id="prodLine"
             type="text"
-            size={3}
+            size={5}
             maxLength={3}
             pattern="[a-z]{3,3}"
             title="Exactly 3 Letters"
@@ -97,17 +98,18 @@ const NewNumberForm: React.FC<{
             id="newProdCode"
             type="text"
             size={20}
+            maxLength={10}
             readOnly={readOnly}
           />
         </div>
-        <div className={classes.control}>
-          <label htmlFor="customCheck">Custom Product Code</label>
+        <div className={classes.checkbox}>
           <input
             id="customCheck"
             type="checkbox"
             onChange={checkBoxHandler}
             ref={customCheckBox}
           />
+          <label htmlFor="customCheck">Custom Product Code</label>
         </div>
         <div className={classes.actions}>
           <button className="btn" onClick={submitHandler}>

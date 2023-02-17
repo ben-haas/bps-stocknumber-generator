@@ -1,9 +1,15 @@
 import { useRef, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 import Card from '../UI/Card';
 import classes from './NewNumberForm.module.css';
 
-const NewNumberForm: React.FC<{ currentNumber: number }> = (props) => {
+const NewNumberForm: React.FC<{
+  currentNumber: number;
+  onAddNumber: (numberData: {}) => void;
+}> = (props) => {
+  const { data: session } = useSession();
+
   const [readOnly, setReadOnly] = useState(true);
   const enteredProdLine = useRef<HTMLInputElement>(null);
   const generatedStockNum = useRef<HTMLInputElement>(null);
@@ -18,6 +24,28 @@ const NewNumberForm: React.FC<{ currentNumber: number }> = (props) => {
 
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const stockNumber = generatedStockNum.current!.value;
+    const productCode = generatedProdCode.current!.value;
+    const enteredProductLine = enteredProdLine.current!.value.toUpperCase();
+    const typical = !customCheckBox.current!.checked;
+    const user = session?.user!.name;
+    const created = new Date();
+    const edited = new Date();
+
+    const numberData = {
+      stock_number: +stockNumber,
+      product_code: productCode,
+      product_line: enteredProductLine,
+      is_typical: typical,
+      entered_by: user,
+      created_at: created.toISOString(),
+      edited: edited.toISOString(),
+    };
+
+    console.log(numberData);
+
+    props.onAddNumber(numberData);
   };
 
   const onProdLineChangeHandler = () => {

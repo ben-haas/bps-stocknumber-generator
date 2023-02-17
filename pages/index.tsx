@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { MongoClient } from 'mongodb';
 
@@ -7,6 +8,22 @@ import NewNumberForm from '@/components/Numbers/NewNumberForm';
 
 const Home: React.FC<{ currentNumber: number }> = (props) => {
   const { data: session, status } = useSession();
+  //const [stockNumber, setStockNumber] = useState(props.currentNumber);
+
+  const addNumberHandler = async (enteredNumberData: {}) => {
+    const response = await fetch('/api/new-number', {
+      method: 'POST',
+      body: JSON.stringify(enteredNumberData),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const data = await response.json();
+    //setStockNumber(stockNumber + 1);
+
+    console.log(data);
+  };
 
   return (
     <>
@@ -18,7 +35,10 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
       </Head>
       <Header />
       <main>
-        <NewNumberForm currentNumber={props.currentNumber} />
+        <NewNumberForm
+          currentNumber={props.currentNumber}
+          onAddNumber={addNumberHandler}
+        />
         <p>{props.currentNumber}</p>
         <p>{JSON.stringify(session)}</p>
         <p>{JSON.stringify(status)}</p>
@@ -41,7 +61,7 @@ export async function getStaticProps() {
 
   client.close();
 
-  const currentNumber = data[0].stock_number;
+  const currentNumber = data[0].data.stock_number;
 
   // const numbers = data.map((number) => ({
   //   stock_number: number.stock_number,

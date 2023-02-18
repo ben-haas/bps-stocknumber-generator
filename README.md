@@ -1,38 +1,35 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Stock Number Generator
 
-## Getting Started
+## Overview
 
-First, run the development server:
+This tool was created to facilitate the creation of stock numbers and product codes for new items added to inventory at Bryant Pipe & Supply. The inventory management system used at the company does not feature a way to automatically increment or track new numbers. In order prevent duplicates and cut down the time it takes to figure out the next number, a tool was needed.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+The stock numbers are anywhere from 1 to 6 digits in length and are assigned sequentially.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The product code is 10 digits and contains the stocknumber and the 3 digit product line separated by a hyphen.
+</br></br>
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+> ## Stock Number -> `24629`
+>
+> ## Product Code -> `NEL-024629`
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+</br></br>
+There are special cases where the product code will include the part number from the manufacturer in place of the stock number. In those cases, there will still be a unique stock number assigned.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Requirements
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- Azure AD client secrets for authentication
 
-## Learn More
+- MongoDB Atlas database
 
-To learn more about Next.js, take a look at the following resources:
+This application uses Azure AD to authenticate users inside of our organization. It is very easy to implement other OAuth providers using [next-auth.js](https://next-auth.js.org/).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+</br></br>
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# TODO
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Add server side data validaton
+- Add UI for errors and successful POSTs
+- Add page with list of stock numbers
+- Allow editing of stock numbers after submition
+- Add testing

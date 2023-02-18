@@ -9,9 +9,9 @@ The stock numbers are anywhere from 1 to 6 digits in length and are assigned seq
 The product code is 10 digits and contains the stocknumber and the 3 digit product line separated by a hyphen.
 </br></br>
 
-> ## Stock Number -> `24629`
+> ### Stock Number -> `24629`
 >
-> ## Product Code -> `NEL-024629`
+> ### Product Code -> `NEL-024629`
 
 </br></br>
 There are special cases where the product code will include the part number from the manufacturer in place of the stock number. In those cases, there will still be a unique stock number assigned.

@@ -5,11 +5,12 @@ import Card from '../UI/Card';
 import classes from './NewNumberForm.module.css';
 
 const NewNumberForm: React.FC<{
+  postStatus: { success: boolean; message: string };
   currentNumber: number;
   onAddNumber: (numberData: {}) => void;
 }> = (props) => {
   const { data: session } = useSession();
-
+  const [statusVisible, setStatusVisible] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
   const enteredProdLine = useRef<HTMLInputElement>(null);
   const generatedStockNum = useRef<HTMLInputElement>(null);
@@ -47,6 +48,12 @@ const NewNumberForm: React.FC<{
 
     enteredProdLine.current!.value = '';
     generatedProdCode.current!.value = '';
+
+    setStatusVisible(true);
+
+    setTimeout(() => {
+      setStatusVisible(false);
+    }, 5000);
   };
 
   const onProdLineChangeHandler = () => {
@@ -117,6 +124,15 @@ const NewNumberForm: React.FC<{
           </button>
         </div>
       </form>
+      {props.postStatus.success && statusVisible && (
+        <div
+          className={`${classes.statusContainer} ${
+            props.postStatus.success ? classes.success : classes.error
+          }`}
+        >
+          {props.postStatus.message}
+        </div>
+      )}
     </Card>
   );
 };

@@ -64,3 +64,18 @@
 .control input:invalid {
   border: 2px solid red;
 }
+
+.statusContainer {
+  position: absolute;
+  bottom: 30px;
+  left: 16px;
+  font-weight: bold;
+}
+
+.success {
+  color: green;
+}
+
+.error {
+  color: red;
+}

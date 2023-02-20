@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useSession } from 'next-auth/react';
 import { MongoClient } from 'mongodb';
 
 import Head from 'next/head';
@@ -7,22 +6,39 @@ import Header from '@/components/Header';
 import NewNumberForm from '@/components/Numbers/NewNumberForm';
 
 const Home: React.FC<{ currentNumber: number }> = (props) => {
-  const { data: session } = useSession();
   const [currentNumber, setCurrentNumber] = useState(props.currentNumber);
+  const [postStatus, setPostStatus] = useState({ success: false, message: '' });
 
   const addNumberHandler = async (enteredNumberData: {}) => {
-    const response = await fetch('/api/new-number', {
-      method: 'POST',
-      body: JSON.stringify(enteredNumberData),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    try {
+      const response = await fetch('/api/new-number', {
+        method: 'POST',
+        body: JSON.stringify(enteredNumberData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    const data = await response.json();
-    setCurrentNumber(currentNumber + 1);
+      if (!response.ok) {
+        throw new Error(
+          'Something went wrong. Refresh the page and try again.'
+        );
+      }
 
-    console.log(data);
+      const data = await response.json();
+
+      setPostStatus({
+        success: true,
+        message: data.message,
+      });
+
+      setCurrentNumber((currentNumber) => currentNumber + 1);
+    } catch (e: any) {
+      setPostStatus({
+        success: false,
+        message: e.message,
+      });
+    }
   };
 
   return (
@@ -38,9 +54,8 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
         <NewNumberForm
           currentNumber={currentNumber}
           onAddNumber={addNumberHandler}
+          postStatus={postStatus}
         />
-        <p>{props.currentNumber}</p>
-        <p>{JSON.stringify(session)}</p>
       </main>
     </>
   );

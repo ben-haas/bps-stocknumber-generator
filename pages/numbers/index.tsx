@@ -1,18 +1,49 @@
 import { MongoClient } from 'mongodb';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 
 import Header from '@/components/Header';
 import Card from '@/components/UI/Card';
 
-const AllNumbersPage: React.FC<{ entries: any[] }> = (props) => {
+const AllNumbersPage: React.FC<{
+  entries: [
+    {
+      stockNumber: number;
+      productCode: string;
+      productLine: string;
+      user: string;
+    }
+  ];
+}> = (props) => {
   return (
     <>
       <Header />
       <Card>
-        <ul>
-          {props.entries.map((entry) => {
-            return <li key={entry.stocknumber}>{entry.stockNumber}</li>;
-          })}
-        </ul>
+        <table>
+          <thead>
+            <tr>
+              <th>Stock Number</th>
+              <th>Product Code</th>
+              <th>Product Line</th>
+              <th>User</th>
+            </tr>
+          </thead>
+          <tbody>
+            {props.entries.map((entry) => {
+              return (
+                <tr key={entry.stockNumber}>
+                  <td>{entry.stockNumber}</td>
+                  <td>{entry.productCode}</td>
+                  <td>{entry.productLine}</td>
+                  <td>{entry.user}</td>
+                  <td>
+                    <FontAwesomeIcon icon={faPenToSquare} />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </Card>
     </>
   );
@@ -35,6 +66,8 @@ export async function getStaticProps() {
   const entries = data.map((entry) => ({
     stockNumber: entry.data.stock_number,
     productCode: entry.data.product_code,
+    productLine: entry.data.product_line,
+    user: entry.data.entered_by,
   }));
 
   return {

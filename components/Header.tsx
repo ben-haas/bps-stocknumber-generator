@@ -1,14 +1,10 @@
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 import classes from './Header.module.css';
 
 const Header = () => {
-  const { data: session } = useSession();
-
-  const user = session?.user!.name;
-  const userGreeting = `Hey, ${user?.substring(0, user.indexOf(' '))}!`;
-
   const signOutHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     signOut();
@@ -16,7 +12,9 @@ const Header = () => {
 
   return (
     <header className={classes.header}>
-      <div className={classes.user}>{userGreeting}</div>
+      <div className={classes.user}>
+        <Image src="/logo_large.png" alt="logo" width="210" height="75" />
+      </div>
       <nav>
         <ul>
           <li>

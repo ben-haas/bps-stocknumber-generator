@@ -11,6 +11,7 @@ const NumberTable: React.FC<{
       productCode: string;
       productLine: string;
       user: string;
+      id: string;
     }
   ];
 }> = (props) => {
@@ -27,13 +28,13 @@ const NumberTable: React.FC<{
       <tbody>
         {props.tableData.map((entry) => {
           return (
-            <tr key={entry.stockNumber}>
+            <tr key={entry.id}>
               <td>{entry.stockNumber}</td>
               <td>{entry.productCode}</td>
               <td>{entry.productLine}</td>
               <td>{entry.user}</td>
               <td>
-                <Link href={'/'}>
+                <Link href={`/${entry.id}`}>
                   <FontAwesomeIcon icon={faPenToSquare} />
                 </Link>
               </td>

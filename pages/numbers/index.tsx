@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 
 import Header from '@/components/Header';
 import Card from '@/components/UI/Card';
@@ -12,6 +12,7 @@ const AllNumbersPage: React.FC<{
       productCode: string;
       productLine: string;
       user: string;
+      id: string;
     }
   ];
 }> = (props) => {
@@ -44,6 +45,7 @@ export async function getStaticProps() {
     productCode: entry.data.product_code,
     productLine: entry.data.product_line,
     user: entry.data.entered_by,
+    id: entry._id.toString(),
   }));
 
   return {

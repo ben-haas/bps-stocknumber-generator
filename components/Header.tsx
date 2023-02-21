@@ -23,7 +23,7 @@ const Header = () => {
             <Link href={'/'}>New Number</Link>
           </li>
           <li>
-            <Link href={'/'}>View Items</Link>
+            <Link href={'/numbers'}>View Items</Link>
           </li>
           <li>
             <button className="btn" onClick={signOutHandler}>

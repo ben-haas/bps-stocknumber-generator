@@ -1,9 +1,11 @@
 import { MongoClient } from 'mongodb';
+import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 
 import Header from '@/components/Header';
 import Card from '@/components/UI/Card';
+import classes from './index.module.css';
 
 const AllNumbersPage: React.FC<{
   entries: [
@@ -19,7 +21,7 @@ const AllNumbersPage: React.FC<{
     <>
       <Header />
       <Card>
-        <table>
+        <table className={classes.table}>
           <thead>
             <tr>
               <th>Stock Number</th>
@@ -37,7 +39,9 @@ const AllNumbersPage: React.FC<{
                   <td>{entry.productLine}</td>
                   <td>{entry.user}</td>
                   <td>
-                    <FontAwesomeIcon icon={faPenToSquare} />
+                    <Link href={'/'}>
+                      <FontAwesomeIcon icon={faPenToSquare} />
+                    </Link>
                   </td>
                 </tr>
               );

@@ -9,6 +9,8 @@ const NumberDetailsPage: React.FC<{
     productCode: string;
     productLine: string;
     user: string;
+    createdAt: string;
+    lastEdited: string;
   };
 }> = (props) => {
   return <NumberDetail numberData={props.numberData} />;
@@ -54,6 +56,8 @@ export async function getStaticProps(context: any) {
         productCode: selectedNumber?.data.product_code,
         productLine: selectedNumber?.data.product_line,
         user: selectedNumber?.data.entered_by,
+        createdAt: selectedNumber?.data.created_at,
+        lastEdited: selectedNumber?.data.last_edited,
       },
     },
   };

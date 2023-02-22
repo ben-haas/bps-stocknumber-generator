@@ -38,8 +38,9 @@ const NewNumberForm: React.FC<{
       product_line: enteredProductLine,
       is_typical: typical,
       entered_by: user,
-      created_at: Date.now().toString(),
-      last_edited: Date.now().toString(),
+      created_at: new Date(),
+      edited_by: user,
+      last_edited: new Date(),
     };
 
     props.onAddNumber(numberData);

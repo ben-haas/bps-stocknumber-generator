@@ -13,6 +13,8 @@ const AllNumbersPage: React.FC<{
       productLine: string;
       user: string;
       id: string;
+      createdAt: string;
+      lastEdited: string;
     }
   ];
 }> = (props) => {
@@ -46,6 +48,8 @@ export async function getStaticProps() {
     productLine: entry.data.product_line,
     user: entry.data.entered_by,
     id: entry._id.toString(),
+    createdAt: entry.data.created_at,
+    lastEdited: entry.data.last_edited,
   }));
 
   return {

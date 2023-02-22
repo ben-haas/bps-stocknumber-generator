@@ -13,7 +13,9 @@ const Header = () => {
   return (
     <header className={classes.header}>
       <div className={classes.user}>
-        <Image src="/logo_large.png" alt="logo" width="210" height="75" />
+        <Link href={'/'}>
+          <Image src="/logo_large.png" alt="logo" width="210" height="75" />
+        </Link>
       </div>
       <nav>
         <ul>

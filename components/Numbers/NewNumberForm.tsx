@@ -31,8 +31,6 @@ const NewNumberForm: React.FC<{
     const enteredProductLine = enteredProdLine.current!.value.toUpperCase();
     const typical = !customCheckBox.current!.checked;
     const user = session?.user!.name;
-    const created = new Date();
-    const edited = new Date();
 
     const numberData = {
       stock_number: +stockNumber,
@@ -40,8 +38,8 @@ const NewNumberForm: React.FC<{
       product_line: enteredProductLine,
       is_typical: typical,
       entered_by: user,
-      created_at: created.toISOString(),
-      edited: edited.toISOString(),
+      created_at: Date.now().toString(),
+      last_edited: Date.now().toString(),
     };
 
     props.onAddNumber(numberData);
@@ -124,7 +122,7 @@ const NewNumberForm: React.FC<{
           </button>
         </div>
       </form>
-      {props.postStatus.success && statusVisible && (
+      {statusVisible && (
         <div
           className={`${classes.statusContainer} ${
             props.postStatus.success ? classes.success : classes.error

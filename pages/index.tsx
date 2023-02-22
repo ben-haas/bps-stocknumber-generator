@@ -26,13 +26,21 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
       }
 
       const data = await response.json();
+      console.log(data);
+
+      if (data.success) {
+        setPostStatus({
+          success: true,
+          message: data.message,
+        });
+
+        setCurrentNumber((currentNumber) => currentNumber + 1);
+      }
 
       setPostStatus({
-        success: true,
+        success: false,
         message: data.message,
       });
-
-      setCurrentNumber((currentNumber) => currentNumber + 1);
     } catch (e: any) {
       setPostStatus({
         success: false,

@@ -15,11 +15,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const result = await numbersCollection.insertOne({ data });
 
       client.close();
+
       res
         .status(201)
         .json({ success: true, message: 'Number Inserted', result: result });
     } catch (e: any) {
-      res.json({ success: false, message: e.message });
+      res.json({ success: false, message: e.message, err: e });
     }
   }
 };

@@ -1,4 +1,5 @@
-import { MongoClient, ObjectId } from 'mongodb';
+import Head from 'next/head';
+import { MongoClient } from 'mongodb';
 
 import Header from '@/components/Header';
 import Card from '@/components/UI/Card';
@@ -20,6 +21,15 @@ const AllNumbersPage: React.FC<{
 }> = (props) => {
   return (
     <>
+      <Head>
+        <title>Stock Number Generator | All Numbers</title>
+        <meta
+          name="description"
+          content="A list of the last 100 stock numbers created"
+        />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Header />
       <Card>
         <NumberTable tableData={props.entries} />

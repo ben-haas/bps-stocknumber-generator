@@ -1,6 +1,8 @@
+import Head from 'next/head';
 import { MongoClient, ObjectId } from 'mongodb';
 
 import NumberDetail from '@/components/Numbers/NumberDetail';
+import Header from '@/components/Header';
 
 const NumberDetailsPage: React.FC<{
   numberData: {
@@ -13,7 +15,18 @@ const NumberDetailsPage: React.FC<{
     lastEdited: string;
   };
 }> = (props) => {
-  return <NumberDetail numberData={props.numberData} />;
+  return (
+    <>
+      <Head>
+        <title>Stock Number Generator | Number Detail</title>
+        <meta name="description" content="Stock number details" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Header />
+      <NumberDetail numberData={props.numberData} />;
+    </>
+  );
 };
 
 export async function getStaticPaths() {

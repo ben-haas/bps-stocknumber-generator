@@ -93,7 +93,7 @@ export async function getStaticProps() {
     props: {
       currentNumber: currentNumber,
     },
-    revalidate: 10,
+    revalidate: 1,
   };
 }
 

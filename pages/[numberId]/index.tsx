@@ -73,6 +73,7 @@ export async function getStaticProps(context: any) {
         lastEdited: selectedNumber?.data.last_edited,
       },
     },
+    revalidate: 1,
   };
 }
 

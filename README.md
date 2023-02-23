@@ -23,13 +23,3 @@ There are special cases where the product code will include the part number from
 - MongoDB Atlas database
 
 This application uses Azure AD to authenticate users inside of our organization. It is very easy to implement other OAuth providers using [next-auth.js](https://next-auth.js.org/).
-
-</br></br>
-
-# TODO
-
-- Add server side data validaton
-- Add UI for errors and successful POSTs
-- Add page with list of stock numbers
-- Allow editing of stock numbers after submition
-- Add testing

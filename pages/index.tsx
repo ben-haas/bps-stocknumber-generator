@@ -10,6 +10,7 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
   const [postStatus, setPostStatus] = useState({ success: false, message: '' });
 
   const addNumberHandler = async (enteredNumberData: {}) => {
+    setPostStatus({ success: false, message: '' });
     try {
       const response = await fetch('/api/new-number', {
         method: 'POST',
@@ -33,7 +34,10 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
           message: data.message,
         });
 
-        setCurrentNumber((currentNumber) => currentNumber + 1);
+        const curNum = await fetch('/api/current-number');
+        const numData = await curNum.json();
+
+        setCurrentNumber(numData.result + 1);
 
         return;
       }
@@ -87,13 +91,12 @@ export async function getStaticProps() {
 
   client.close();
 
-  const currentNumber = data[0].data.stock_number;
+  const currentNumber = data[0].data.stock_number + 1;
 
   return {
     props: {
       currentNumber: currentNumber,
     },
-    revalidate: 1,
   };
 }
 

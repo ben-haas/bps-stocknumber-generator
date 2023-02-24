@@ -17,7 +17,7 @@ const NewNumberForm: React.FC<{
   const generatedProdCode = useRef<HTMLInputElement>(null);
   const customCheckBox = useRef<HTMLInputElement>(null);
 
-  const nextStockNumber = props.currentNumber + 1;
+  const nextStockNumber = props.currentNumber;
 
   const checkBoxHandler = () => {
     setReadOnly(!customCheckBox.current!.checked);

@@ -38,7 +38,7 @@ const AllNumbersPage: React.FC<{
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const client = await MongoClient.connect(process.env.MONGODB_URI as string);
 
   const db = client.db('StockNumbers');
@@ -66,7 +66,6 @@ export async function getStaticProps() {
     props: {
       entries: entries,
     },
-    revalidate: 1,
   };
 }
 

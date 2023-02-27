@@ -12,6 +12,7 @@ const NewNumberForm: React.FC<{
   onAddNumber: (numberData: {}) => void;
 }> = (props) => {
   const { data: session } = useSession();
+
   const [statusVisible, setStatusVisible] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
   const enteredProdLine = useRef<HTMLInputElement>(null);

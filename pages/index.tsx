@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MongoClient } from 'mongodb';
 
 import Head from 'next/head';
@@ -6,8 +6,11 @@ import Header from '@/components/Header';
 import NewNumberForm from '@/components/Numbers/NewNumberForm';
 
 const Home: React.FC<{ currentNumber: number }> = (props) => {
-  const [currentNumber, setCurrentNumber] = useState(props.currentNumber);
-  const [postStatus, setPostStatus] = useState({ success: false, message: '' });
+  const [nextNumber, setNextNumber] = useState<number>(props.currentNumber + 1);
+  const [postStatus, setPostStatus] = useState<{
+    success: boolean;
+    message: string;
+  }>({ success: false, message: '' });
 
   const addNumberHandler = async (enteredNumberData: {}) => {
     setPostStatus({ success: false, message: '' });
@@ -36,10 +39,8 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
 
         const curNum = await fetch('/api/current-number');
         const numData = await curNum.json();
-        console.log('fetched current number');
 
-        setCurrentNumber((await numData.result) + 1);
-        console.log(currentNumber);
+        setNextNumber(numData.result + 1);
 
         return;
       }
@@ -70,7 +71,7 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
       <Header />
       <main>
         <NewNumberForm
-          currentNumber={currentNumber}
+          currentNumber={nextNumber}
           onAddNumber={addNumberHandler}
           postStatus={postStatus}
         />
@@ -79,7 +80,7 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const client = await MongoClient.connect(process.env.MONGODB_URI as string);
 
   const db = client.db('StockNumbers');
@@ -93,7 +94,9 @@ export async function getStaticProps() {
 
   client.close();
 
-  const currentNumber = data[0].data.stock_number + 1;
+  const currentNumber = data[0].data.stock_number;
+
+  console.log('Update current number');
 
   return {
     props: {

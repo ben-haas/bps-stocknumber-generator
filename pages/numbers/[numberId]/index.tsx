@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient } from 'mongodb';
 
 import NumberDetail from '@/components/Numbers/NumberDetail';
 import Header from '@/components/Header';
@@ -28,26 +28,7 @@ const NumberDetailsPage: React.FC<{
   );
 };
 
-export async function getStaticPaths() {
-  const client = await MongoClient.connect(process.env.MONGODB_URI as string);
-
-  const db = client.db('StockNumbers');
-  const numbersCollection = db.collection('numbers');
-  const result = await numbersCollection.find().toArray();
-
-  client.close();
-
-  const paths = result.map((number) => ({
-    params: { numberId: number.data.stock_number.toString() },
-  }));
-
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-export async function getStaticProps(context: any) {
+export async function getServerSideProps(context: any) {
   const numberId = +context.params.numberId;
 
   const client = await MongoClient.connect(process.env.MONGODB_URI as string);
@@ -71,7 +52,6 @@ export async function getStaticProps(context: any) {
         lastEdited: data[0]?.data.last_edited,
       },
     },
-    revalidate: 1,
   };
 }
 

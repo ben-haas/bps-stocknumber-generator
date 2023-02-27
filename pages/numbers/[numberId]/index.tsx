@@ -6,7 +6,6 @@ import Header from '@/components/Header';
 
 const NumberDetailsPage: React.FC<{
   numberData: {
-    id: string;
     stockNumber: number;
     productCode: string;
     productLine: string;
@@ -34,12 +33,12 @@ export async function getStaticPaths() {
 
   const db = client.db('StockNumbers');
   const numbersCollection = db.collection('numbers');
-  const data = await numbersCollection.find().toArray();
+  const result = await numbersCollection.find().toArray();
 
   client.close();
 
-  const paths = data.map((number) => ({
-    params: { numberId: number._id.toString() },
+  const paths = result.map((number) => ({
+    params: { numberId: number.data.stock_number.toString() },
   }));
 
   return {
@@ -49,28 +48,27 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context: any) {
-  const numberId = context.params.numberId;
+  const numberId = +context.params.numberId;
 
   const client = await MongoClient.connect(process.env.MONGODB_URI as string);
 
   const db = client.db('StockNumbers');
   const numbersCollection = db.collection('numbers');
-  const selectedNumber = await numbersCollection.findOne({
-    _id: new ObjectId(numberId),
-  });
+  const data = await numbersCollection
+    .find({ 'data.stock_number': numberId })
+    .toArray();
 
   client.close();
 
   return {
     props: {
       numberData: {
-        id: selectedNumber?._id.toString(),
-        stockNumber: selectedNumber?.data.stock_number,
-        productCode: selectedNumber?.data.product_code,
-        productLine: selectedNumber?.data.product_line,
-        user: selectedNumber?.data.entered_by,
-        createdAt: selectedNumber?.data.created_at,
-        lastEdited: selectedNumber?.data.last_edited,
+        stockNumber: data[0]?.data.stock_number,
+        productCode: data[0]?.data.product_code,
+        productLine: data[0]?.data.product_line,
+        user: data[0]?.data.entered_by,
+        createdAt: data[0]?.data.created_at,
+        lastEdited: data[0]?.data.last_edited,
       },
     },
     revalidate: 1,

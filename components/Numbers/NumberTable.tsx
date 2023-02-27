@@ -34,7 +34,7 @@ const NumberTable: React.FC<{
               <td>{entry.productLine}</td>
               <td>{entry.user}</td>
               <td>
-                <Link href={`/numbers/${entry.id}`}>
+                <Link href={`/numbers/${entry.stockNumber}`}>
                   <FontAwesomeIcon icon={faPenToSquare} />
                 </Link>
               </td>

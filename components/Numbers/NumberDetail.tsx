@@ -3,7 +3,6 @@ import classes from './NumberDetail.module.css';
 
 const NumberDetail: React.FC<{
   numberData: {
-    id: string;
     stockNumber: number;
     productCode: string;
     productLine: string;

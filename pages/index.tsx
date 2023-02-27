@@ -36,8 +36,10 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
 
         const curNum = await fetch('/api/current-number');
         const numData = await curNum.json();
+        console.log('fetched current number');
 
-        setCurrentNumber(numData.result + 1);
+        setCurrentNumber((await numData.result) + 1);
+        console.log(currentNumber);
 
         return;
       }

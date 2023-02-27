@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 
 import Card from '../UI/Card';
 import classes from './NewNumberForm.module.css';
@@ -68,6 +70,10 @@ const NewNumberForm: React.FC<{
     }
   };
 
+  const copyButtonHandler = () => {
+    navigator.clipboard.writeText(generatedProdCode.current!.value);
+  };
+
   return (
     <Card>
       <form className={classes.form}>
@@ -85,7 +91,7 @@ const NewNumberForm: React.FC<{
             required
           />
         </div>
-        <div className={`${classes.control} ${classes.notAllowed}`}>
+        <div className={classes.control}>
           <label htmlFor="nextStockNum">Next Stock Number</label>
           <input
             ref={generatedStockNum}
@@ -101,12 +107,22 @@ const NewNumberForm: React.FC<{
           <label htmlFor="newProdCode">Product Code</label>
           <input
             ref={generatedProdCode}
+            className={`${readOnly ? classes.notAllowed : ''} ${
+              classes.productCode
+            }`}
             id="newProdCode"
             type="text"
-            size={20}
+            size={10}
             maxLength={10}
             readOnly={readOnly}
           />
+          <span
+            className={classes.copyBtn}
+            onClick={copyButtonHandler}
+            title="copy"
+          >
+            <FontAwesomeIcon icon={faClipboard} />
+          </span>
         </div>
         <div className={classes.checkbox}>
           <input

@@ -37,6 +37,10 @@
   text-transform: uppercase;
 }
 
+.productCode {
+  display: inline !important;
+}
+
 .control input:focus,
 .control textarea:focus {
   background-color: #cfdaec;
@@ -51,6 +55,13 @@
 .checkbox label {
   font-weight: bold;
   margin-left: 0.5rem;
+}
+
+.copyBtn {
+  display: inline;
+  margin: 0 8px;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .actions {

@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { MongoClient } from 'mongodb';
 
 import Head from 'next/head';
 import Header from '@/components/Header';
+import { StockNumberContext } from '@/context/context';
 import NewNumberForm from '@/components/Numbers/NewNumberForm';
 
-const Home: React.FC<{ currentNumber: number }> = (props) => {
-  const [nextNumber, setNextNumber] = useState<number>(props.currentNumber + 1);
+const Home: React.FC<{ currentNumber: number }> = () => {
+  const StockNumberCtx = useContext(StockNumberContext);
   const [postStatus, setPostStatus] = useState<{
     success: boolean;
     message: string;
@@ -31,24 +32,21 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
 
       const data = await response.json();
 
-      if (data.success) {
+      if (!data.success) {
         setPostStatus({
-          success: true,
+          success: false,
           message: data.message,
         });
-
-        const curNum = await fetch('/api/current-number');
-        const numData = await curNum.json();
-
-        setNextNumber(numData.result + 1);
 
         return;
       }
 
       setPostStatus({
-        success: false,
+        success: true,
         message: data.message,
       });
+
+      StockNumberCtx.incrementStockNumber();
     } catch (e: any) {
       setPostStatus({
         success: false,
@@ -71,7 +69,7 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
       <Header />
       <main>
         <NewNumberForm
-          currentNumber={nextNumber}
+          nextStockNumber={StockNumberCtx.nextNumber}
           onAddNumber={addNumberHandler}
           postStatus={postStatus}
         />
@@ -79,30 +77,5 @@ const Home: React.FC<{ currentNumber: number }> = (props) => {
     </>
   );
 };
-
-export async function getServerSideProps() {
-  const client = await MongoClient.connect(process.env.MONGODB_URI as string);
-
-  const db = client.db('StockNumbers');
-  const numbersCollection = db.collection('numbers');
-
-  const data = await numbersCollection
-    .find()
-    .sort({ 'data.stock_number': -1 })
-    .limit(1)
-    .toArray();
-
-  client.close();
-
-  const currentNumber = data[0].data.stock_number;
-
-  console.log('Update current number');
-
-  return {
-    props: {
-      currentNumber: currentNumber,
-    },
-  };
-}
 
 export default Home;

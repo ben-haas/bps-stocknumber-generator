@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useContext, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClipboard } from '@fortawesome/free-regular-svg-icons';
@@ -7,12 +7,11 @@ import Card from '../UI/Card';
 import classes from './NewNumberForm.module.css';
 
 const NewNumberForm: React.FC<{
+  nextStockNumber: number;
   postStatus: { success: boolean; message: string };
-  currentNumber: number;
   onAddNumber: (numberData: {}) => void;
 }> = (props) => {
   const { data: session } = useSession();
-
   const [statusVisible, setStatusVisible] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
   const enteredProdLine = useRef<HTMLInputElement>(null);
@@ -20,7 +19,9 @@ const NewNumberForm: React.FC<{
   const generatedProdCode = useRef<HTMLInputElement>(null);
   const customCheckBox = useRef<HTMLInputElement>(null);
 
-  const nextStockNumber = props.currentNumber;
+  useEffect(() => {
+    generatedStockNum.current!.value = props.nextStockNumber.toString();
+  }, [props.nextStockNumber]);
 
   const checkBoxHandler = () => {
     setReadOnly(!customCheckBox.current!.checked);
@@ -100,7 +101,7 @@ const NewNumberForm: React.FC<{
             id="nextStockNum"
             type="text"
             size={10}
-            defaultValue={nextStockNumber}
+            defaultValue="Loading..."
             readOnly
           />
         </div>

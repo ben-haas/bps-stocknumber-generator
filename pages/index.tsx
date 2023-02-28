@@ -1,5 +1,4 @@
 import { useState, useContext } from 'react';
-import { MongoClient } from 'mongodb';
 
 import Head from 'next/head';
 import Header from '@/components/Header';

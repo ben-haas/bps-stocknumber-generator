@@ -4,7 +4,6 @@ import { MongoClient } from 'mongodb';
 import Header from '@/components/Header';
 import Card from '@/components/UI/Card';
 import NumberTable from '@/components/Numbers/NumberTable';
-import classes from './index.module.css';
 
 const AllNumbersPage: React.FC<{
   entries: [

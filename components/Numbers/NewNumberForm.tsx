@@ -20,7 +20,9 @@ const NewNumberForm: React.FC<{
   const customCheckBox = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    generatedStockNum.current!.value = props.nextStockNumber.toString();
+    if (props.nextStockNumber != 0) {
+      generatedStockNum.current!.value = props.nextStockNumber.toString();
+    }
   }, [props.nextStockNumber]);
 
   const checkBoxHandler = () => {

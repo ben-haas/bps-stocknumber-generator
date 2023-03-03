@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 
 import Card from '../UI/Card';
+import Button from '../Button';
 import classes from './NewNumberForm.module.css';
 
 const NewNumberForm: React.FC<{
@@ -138,9 +139,7 @@ const NewNumberForm: React.FC<{
           <label htmlFor="customCheck">Custom Product Code</label>
         </div>
         <div className={classes.actions}>
-          <button className="btn" onClick={submitHandler}>
-            Add Stock Number
-          </button>
+          <Button onClick={submitHandler}>Add Stock Number</Button>
         </div>
       </form>
       {statusVisible && (

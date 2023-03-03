@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import Button from './Button';
+
 const Header = () => {
   const signOutHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -25,9 +27,7 @@ const Header = () => {
             <StyledLink href={'/numbers'}>View Items</StyledLink>
           </LI>
           <LI>
-            <button className="btn" onClick={signOutHandler}>
-              Logout
-            </button>
+            <Button onClick={signOutHandler}>Logout</Button>
           </LI>
         </UL>
       </nav>

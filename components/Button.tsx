@@ -1,8 +1,13 @@
-import { PropsWithChildren } from 'react';
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-const Button: React.FC<PropsWithChildren> = ({ children }) => {
-  return <Btn>{children}</Btn>;
+type ButtonProps = {
+  children: ReactNode;
+  onClick?: React.MouseEventHandler;
+};
+
+const Button: React.FC<ButtonProps> = ({ children, onClick }) => {
+  return <Btn onClick={onClick}>{children}</Btn>;
 };
 
 const Btn = styled.button`

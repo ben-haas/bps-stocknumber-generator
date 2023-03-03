@@ -48,22 +48,6 @@ const GlobalStyles = createGlobalStyle`
     overflow-wrap: break-word;
   }
 
-  .btn {
-    font: inherit;
-    background-color: #0d47a1;
-    border: 1px solid white;
-    color: white;
-    font-weight: bold;
-    padding: 0.5rem 1.5rem;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-
-  .btn:hover {
-    background-color: #a1660d;
-    color: white;
-  }
-
   #root,
   #__next {
     isolation: isolate;

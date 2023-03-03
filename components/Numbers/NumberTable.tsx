@@ -1,8 +1,7 @@
 import Link from 'next/link';
+import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
-
-import classes from './NumberTable.module.css';
 
 const NumberTable: React.FC<{
   tableData: [
@@ -16,7 +15,7 @@ const NumberTable: React.FC<{
   ];
 }> = (props) => {
   return (
-    <table className={classes.table}>
+    <Table>
       <thead>
         <tr>
           <th>Stock Number</th>
@@ -42,8 +41,16 @@ const NumberTable: React.FC<{
           );
         })}
       </tbody>
-    </table>
+    </Table>
   );
 };
+
+const Table = styled.table`
+  width: 100%;
+
+  tr {
+    text-align: center;
+  }
+`;
 
 export default NumberTable;

@@ -19,17 +19,17 @@ const Header = () => {
         </StyledLink>
       </div>
       <nav>
-        <UL>
-          <LI>
+        <ul>
+          <li>
             <StyledLink href={'/'}>New Number</StyledLink>
-          </LI>
-          <LI>
+          </li>
+          <li>
             <StyledLink href={'/numbers'}>View Items</StyledLink>
-          </LI>
-          <LI>
+          </li>
+          <li>
             <Button onClick={signOutHandler}>Logout</Button>
-          </LI>
-        </UL>
+          </li>
+        </ul>
       </nav>
     </Wrapper>
   );
@@ -44,18 +44,18 @@ const Wrapper = styled.header`
   justify-content: space-between;
   align-items: center;
   padding: 0 10%;
-`;
 
-const UL = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: baseline;
-`;
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: baseline;
+  }
 
-const LI = styled.li`
-  margin: 0 1rem;
+  li {
+    margin: 0 1rem;
+  }
 `;
 
 const StyledLink = styled(Link)`

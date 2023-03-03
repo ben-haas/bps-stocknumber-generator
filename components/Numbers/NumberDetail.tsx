@@ -1,5 +1,5 @@
 import Card from '../UI/Card';
-import classes from './NumberDetail.module.css';
+import styled from 'styled-components';
 
 const NumberDetail: React.FC<{
   numberData: {
@@ -17,7 +17,7 @@ const NumberDetail: React.FC<{
 
   return (
     <Card>
-      <div className={classes.details}>
+      <Wrapper>
         <h3>Stock Number</h3>
         <p>{props.numberData.stockNumber}</p>
         <h3>Product Code</h3>
@@ -28,9 +28,13 @@ const NumberDetail: React.FC<{
         <p>{props.numberData.user}</p>
         <h3>Created At</h3>
         <p>{createdDate}</p>
-      </div>
+      </Wrapper>
     </Card>
   );
 };
+
+const Wrapper = styled.div`
+  text-align: center;
+`;
 
 export default NumberDetail;

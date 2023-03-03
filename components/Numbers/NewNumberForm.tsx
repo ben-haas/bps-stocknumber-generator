@@ -1,10 +1,11 @@
 import { useRef, useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 
 import Card from '../UI/Card';
-import Button from '../Button';
+import Button from '../UI/Button';
 import classes from './NewNumberForm.module.css';
 
 const NewNumberForm: React.FC<{
@@ -81,10 +82,10 @@ const NewNumberForm: React.FC<{
 
   return (
     <Card>
-      <form className={classes.form}>
-        <div className={classes.control}>
+      <NumberForm>
+        <Control>
           <label htmlFor="prodLine">Product Line</label>
-          <input
+          <NumberInput
             ref={enteredProdLine}
             id="prodLine"
             type="text"
@@ -95,10 +96,10 @@ const NewNumberForm: React.FC<{
             onChange={onProdLineChangeHandler}
             required
           />
-        </div>
-        <div className={classes.control}>
+        </Control>
+        <Control>
           <label htmlFor="nextStockNum">Next Stock Number</label>
-          <input
+          <NumberInput
             ref={generatedStockNum}
             className={classes.notAllowed}
             id="nextStockNum"
@@ -107,41 +108,33 @@ const NewNumberForm: React.FC<{
             defaultValue="Loading..."
             readOnly
           />
-        </div>
-        <div className={classes.control}>
+        </Control>
+        <Control>
           <label htmlFor="newProdCode">Product Code</label>
-          <input
+          <NumberInput
             ref={generatedProdCode}
-            className={`${readOnly ? classes.notAllowed : ''} ${
-              classes.productCode
-            }`}
+            className={`${readOnly ? classes.notAllowed : ''}`}
             id="newProdCode"
             type="text"
             size={10}
             maxLength={10}
             readOnly={readOnly}
           />
-          <span
-            className={classes.copyBtn}
-            onClick={copyButtonHandler}
-            title="copy"
-          >
-            <FontAwesomeIcon icon={faClipboard} />
-          </span>
-        </div>
-        <div className={classes.checkbox}>
-          <input
+          <FontAwesomeIcon icon={faClipboard} onClick={copyButtonHandler} />
+        </Control>
+        <Control>
+          <CustomCheck
             id="customCheck"
             type="checkbox"
             onChange={checkBoxHandler}
             ref={customCheckBox}
           />
           <label htmlFor="customCheck">Custom Product Code</label>
-        </div>
-        <div className={classes.actions}>
-          <Button onClick={submitHandler}>Add Stock Number</Button>
-        </div>
-      </form>
+        </Control>
+        <Actions>
+          <SubmitBtn onClick={submitHandler}>Add Stock Number</SubmitBtn>
+        </Actions>
+      </NumberForm>
       {statusVisible && (
         <div
           className={`${classes.statusContainer} ${
@@ -154,5 +147,56 @@ const NewNumberForm: React.FC<{
     </Card>
   );
 };
+
+const NumberForm = styled.form`
+  position: relative;
+`;
+
+const Control = styled.div`
+  margin-bottom: 1rem;
+
+  label {
+    font-weight: bold;
+  }
+
+  &:last-child {
+    max-width: 15px;
+  }
+`;
+
+const NumberInput = styled.input`
+  font: inherit;
+  padding: 0.35rem;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  border: 1px solid #c1d1d1;
+  display: block;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+
+  &:focus {
+    background-color: #cfdaec;
+    outline-color: #0d47a1;
+  }
+
+  &:invalid {
+    border: 2px solid red;
+  }
+`;
+
+const CustomCheck = styled.input`
+  height: 16px;
+  width: 16px;
+  margin-right: 16px;
+  vertical-align: middle;
+`;
+
+const Actions = styled.div`
+  text-align: right;
+`;
+
+const SubmitBtn = styled(Button)`
+  font-size: 1.25rem;
+`;
 
 export default NewNumberForm;

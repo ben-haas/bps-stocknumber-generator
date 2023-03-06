@@ -6,7 +6,10 @@ import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 
 import Card from '../UI/Card';
 import Button from '../UI/Button';
-import classes from './NewNumberForm.module.css';
+
+interface Props {
+  status: boolean;
+}
 
 const NewNumberForm: React.FC<{
   nextStockNumber: number;
@@ -101,7 +104,7 @@ const NewNumberForm: React.FC<{
           <label htmlFor="nextStockNum">Next Stock Number</label>
           <NumberInput
             ref={generatedStockNum}
-            className={classes.notAllowed}
+            style={{ cursor: 'not-allowed' }}
             id="nextStockNum"
             type="text"
             size={10}
@@ -111,16 +114,18 @@ const NewNumberForm: React.FC<{
         </Control>
         <Control>
           <label htmlFor="newProdCode">Product Code</label>
-          <NumberInput
-            ref={generatedProdCode}
-            className={`${readOnly ? classes.notAllowed : ''}`}
-            id="newProdCode"
-            type="text"
-            size={10}
-            maxLength={10}
-            readOnly={readOnly}
-          />
-          <FontAwesomeIcon icon={faClipboard} onClick={copyButtonHandler} />
+          <InputWrapper>
+            <NumberInput
+              ref={generatedProdCode}
+              id="newProdCode"
+              style={{ cursor: readOnly ? 'not-allowed' : 'text' }}
+              type="text"
+              size={12}
+              maxLength={10}
+              readOnly={readOnly}
+            />
+            <Clipboard icon={faClipboard} onClick={copyButtonHandler} />
+          </InputWrapper>
         </Control>
         <Control>
           <CustomCheck
@@ -136,13 +141,9 @@ const NewNumberForm: React.FC<{
         </Actions>
       </NumberForm>
       {statusVisible && (
-        <div
-          className={`${classes.statusContainer} ${
-            props.postStatus.success ? classes.success : classes.error
-          }`}
-        >
+        <StatusContainer status={props.postStatus.success}>
           {props.postStatus.message}
-        </div>
+        </StatusContainer>
       )}
     </Card>
   );
@@ -158,10 +159,11 @@ const Control = styled.div`
   label {
     font-weight: bold;
   }
+`;
 
-  &:last-child {
-    max-width: 15px;
-  }
+const InputWrapper = styled.div`
+  position: relative;
+  width: max-content;
 `;
 
 const NumberInput = styled.input`
@@ -184,6 +186,16 @@ const NumberInput = styled.input`
   }
 `;
 
+const Clipboard = styled(FontAwesomeIcon)`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 10px;
+  margin: auto;
+  font-size: 1.25rem;
+  cursor: pointer;
+`;
+
 const CustomCheck = styled.input`
   height: 16px;
   width: 16px;
@@ -197,6 +209,14 @@ const Actions = styled.div`
 
 const SubmitBtn = styled(Button)`
   font-size: 1.25rem;
+`;
+
+const StatusContainer = styled.div<Props>`
+  position: absolute;
+  bottom: 30px;
+  left: 16px;
+  font-weight: bold;
+  color: ${(p) => (p.status ? 'green' : 'red')};
 `;
 
 export default NewNumberForm;

@@ -78,6 +78,10 @@ const NewNumberForm: React.FC<{
     setProdLine(e.target.value);
   };
 
+  const pCodeChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProdCode(e.target.value);
+  };
+
   const copyButtonHandler = () => {
     navigator.clipboard.writeText(prodCode);
   };
@@ -115,6 +119,7 @@ const NewNumberForm: React.FC<{
           <InputWrapper>
             <NumberInput
               value={prodCode}
+              onChange={pCodeChangeHandler}
               id="newProdCode"
               style={{ cursor: readOnly ? 'not-allowed' : 'text' }}
               type="text"

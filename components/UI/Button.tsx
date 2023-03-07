@@ -1,10 +1,10 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-type ButtonProps = {
+interface ButtonProps {
   children: ReactNode;
   onClick?: React.MouseEventHandler;
-};
+}
 
 const Button: React.FC<ButtonProps> = ({ children, onClick }) => {
   return <Btn onClick={onClick}>{children}</Btn>;

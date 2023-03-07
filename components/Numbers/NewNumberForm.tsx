@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,15 +7,21 @@ import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 import Card from '../UI/Card';
 import Button from '../UI/Button';
 
+interface FormProps {
+  nextStockNumber: number;
+  postStatus: { success: boolean; message: string };
+  onAddNumber: (numberData: {}) => void;
+}
+
 interface Props {
   status: boolean;
 }
 
-const NewNumberForm: React.FC<{
-  nextStockNumber: number;
-  postStatus: { success: boolean; message: string };
-  onAddNumber: (numberData: {}) => void;
-}> = (props) => {
+const NewNumberForm: React.FC<FormProps> = ({
+  nextStockNumber,
+  postStatus,
+  onAddNumber,
+}) => {
   const { data: session } = useSession();
   const [statusVisible, setStatusVisible] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
@@ -25,8 +31,8 @@ const NewNumberForm: React.FC<{
   const [lockedPCode, setLockedPCode] = useState(false);
 
   useEffect(() => {
-    if (props.nextStockNumber != 0) {
-      setStockNum(props.nextStockNumber.toString());
+    if (nextStockNumber != 0) {
+      setStockNum(nextStockNumber.toString());
     }
 
     if (prodLine.length === 3 && stockNum) {
@@ -36,7 +42,7 @@ const NewNumberForm: React.FC<{
     }
 
     setReadOnly(!lockedPCode);
-  }, [props.nextStockNumber, prodLine, stockNum, lockedPCode]);
+  }, [nextStockNumber, prodLine, stockNum, lockedPCode]);
 
   const checkBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLockedPCode(e.target.checked);
@@ -62,7 +68,7 @@ const NewNumberForm: React.FC<{
       last_edited: new Date(),
     };
 
-    props.onAddNumber(numberData);
+    onAddNumber(numberData);
 
     setProdLine('');
     setProdCode('');
@@ -144,8 +150,8 @@ const NewNumberForm: React.FC<{
         </Actions>
       </NumberForm>
       {statusVisible && (
-        <StatusContainer status={props.postStatus.success}>
-          {props.postStatus.message}
+        <StatusContainer status={postStatus.success}>
+          {postStatus.message}
         </StatusContainer>
       )}
     </Card>

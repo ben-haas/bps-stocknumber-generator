@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Card from '@/components/UI/Card';
 import NumberTable from '@/components/Numbers/NumberTable';
 
-const AllNumbersPage: React.FC<{
+interface PageProps {
   entries: [
     {
       stockNumber: number;
@@ -17,7 +17,9 @@ const AllNumbersPage: React.FC<{
       lastEdited: string;
     }
   ];
-}> = (props) => {
+}
+
+const AllNumbersPage: React.FC<PageProps> = ({ entries }) => {
   return (
     <>
       <Head>
@@ -31,7 +33,7 @@ const AllNumbersPage: React.FC<{
       </Head>
       <Header />
       <Card>
-        <NumberTable tableData={props.entries} />
+        <NumberTable tableData={entries} />
       </Card>
     </>
   );

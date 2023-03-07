@@ -4,7 +4,7 @@ import { MongoClient } from 'mongodb';
 import NumberDetail from '@/components/Numbers/NumberDetail';
 import Header from '@/components/Header';
 
-const NumberDetailsPage: React.FC<{
+interface PageProps {
   numberData: {
     stockNumber: number;
     productCode: string;
@@ -13,7 +13,9 @@ const NumberDetailsPage: React.FC<{
     createdAt: string;
     lastEdited: string;
   };
-}> = (props) => {
+}
+
+const NumberDetailsPage: React.FC<PageProps> = ({ numberData }) => {
   return (
     <>
       <Head>
@@ -23,7 +25,7 @@ const NumberDetailsPage: React.FC<{
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <NumberDetail numberData={props.numberData} />;
+      <NumberDetail numberData={numberData} />;
     </>
   );
 };

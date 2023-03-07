@@ -1,8 +1,8 @@
 import { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 
-const Card: React.FC<PropsWithChildren> = (props) => {
-  return <Wrapper>{props.children}</Wrapper>;
+const Card: React.FC<PropsWithChildren> = ({ children }) => {
+  return <Wrapper>{children}</Wrapper>;
 };
 
 const Wrapper = styled.div`

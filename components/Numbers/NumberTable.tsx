@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 
-const NumberTable: React.FC<{
+interface TableProps {
   tableData: [
     {
       stockNumber: number;
@@ -13,7 +13,9 @@ const NumberTable: React.FC<{
       id: string;
     }
   ];
-}> = (props) => {
+}
+
+const NumberTable: React.FC<TableProps> = ({ tableData }) => {
   return (
     <Table>
       <thead>
@@ -25,7 +27,7 @@ const NumberTable: React.FC<{
         </tr>
       </thead>
       <tbody>
-        {props.tableData.map((entry) => {
+        {tableData.map((entry) => {
           return (
             <tr key={entry.id}>
               <td>{entry.stockNumber}</td>

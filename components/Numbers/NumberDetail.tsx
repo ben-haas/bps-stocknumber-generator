@@ -1,7 +1,7 @@
 import Card from '../UI/Card';
 import styled from 'styled-components';
 
-const NumberDetail: React.FC<{
+interface DetailProps {
   numberData: {
     stockNumber: number;
     productCode: string;
@@ -10,22 +10,25 @@ const NumberDetail: React.FC<{
     createdAt: string;
     lastEdited: string;
   };
-}> = (props) => {
-  const createdDate: string = new Date(
-    props.numberData.createdAt
-  ).toLocaleString('en-US', { timeStyle: 'short', dateStyle: 'short' });
+}
+
+const NumberDetail: React.FC<DetailProps> = ({ numberData }) => {
+  const createdDate: string = new Date(numberData.createdAt).toLocaleString(
+    'en-US',
+    { timeStyle: 'short', dateStyle: 'short' }
+  );
 
   return (
     <Card>
       <Wrapper>
         <h3>Stock Number</h3>
-        <p>{props.numberData.stockNumber}</p>
+        <p>{numberData.stockNumber}</p>
         <h3>Product Code</h3>
-        <p>{props.numberData.productCode}</p>
+        <p>{numberData.productCode}</p>
         <h3>Product Line</h3>
-        <p>{props.numberData.productLine}</p>
+        <p>{numberData.productLine}</p>
         <h3>Created By</h3>
-        <p>{props.numberData.user}</p>
+        <p>{numberData.user}</p>
         <h3>Created At</h3>
         <p>{createdDate}</p>
       </Wrapper>

@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 
+import { COLORS } from '@/styles/constants';
+
 interface ButtonProps {
   children: ReactNode;
   onClick?: React.MouseEventHandler;
@@ -12,7 +14,7 @@ const Button: React.FC<ButtonProps> = ({ children, onClick }) => {
 
 const Btn = styled.button`
   font: inherit;
-  background-color: #0d47a1;
+  background-color: ${COLORS.primary};
   border: 1px solid white;
   color: white;
   font-weight: bold;
@@ -21,8 +23,7 @@ const Btn = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #a1660d;
-    color: white;
+    background-color: ${COLORS.secondary};
   }
 `;
 

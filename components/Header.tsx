@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 
+import { COLORS } from '@/styles/constants';
 import Button from './UI/Button';
 
 const Header = () => {
@@ -38,7 +39,7 @@ const Header = () => {
 const Wrapper = styled.header`
   width: auto;
   height: 5rem;
-  background-color: #0d47a1;
+  background-color: ${COLORS.primary};
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: space-between;
@@ -64,7 +65,7 @@ const StyledLink = styled(Link)`
   font-weight: bold;
 
   &:hover {
-    color: #d6943f;
+    border-bottom: 2px solid white;
   }
 `;
 

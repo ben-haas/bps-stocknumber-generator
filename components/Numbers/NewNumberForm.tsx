@@ -6,6 +6,7 @@ import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 
 import Card from '../UI/Card';
 import Button from '../UI/Button';
+import { COLORS } from '@/styles/constants';
 
 interface FormProps {
   nextStockNumber: number;
@@ -13,7 +14,7 @@ interface FormProps {
   onAddNumber: (numberData: {}) => void;
 }
 
-interface Props {
+interface StatusProps {
   status: boolean;
 }
 
@@ -179,19 +180,20 @@ const NumberInput = styled.input`
   font: inherit;
   padding: 0.35rem;
   border-radius: 4px;
-  background-color: #f0f0f0;
-  border: 1px solid #c1d1d1;
+  background-color: ${COLORS.blueGray50};
+  border: 1px solid ${COLORS.blueGray50};
   display: block;
   font-size: 1.25rem;
   text-transform: uppercase;
 
   &:focus {
-    background-color: #cfdaec;
-    outline-color: #0d47a1;
+    background-color: ${COLORS.secondary_light};
+    outline-color: ${COLORS.primary};
   }
 
   &:invalid {
-    border: 2px solid red;
+    background-color: ${COLORS.alert100};
+    outline-color: ${COLORS.alert900};
   }
 `;
 
@@ -220,7 +222,7 @@ const SubmitBtn = styled(Button)`
   font-size: 1.25rem;
 `;
 
-const StatusContainer = styled.div<Props>`
+const StatusContainer = styled.div<StatusProps>`
   position: absolute;
   bottom: 30px;
   left: 16px;

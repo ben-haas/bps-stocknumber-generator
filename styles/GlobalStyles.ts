@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { COLORS } from './constants';
 
 const GlobalStyles = createGlobalStyle`
   *,
@@ -17,6 +18,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
+    background-color: ${COLORS.blueGray50};
     font-family: 'Open Sans', sans-serif;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;

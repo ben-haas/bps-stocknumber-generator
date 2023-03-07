@@ -19,28 +19,36 @@ const NewNumberForm: React.FC<{
   const { data: session } = useSession();
   const [statusVisible, setStatusVisible] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
-  const enteredProdLine = useRef<HTMLInputElement>(null);
-  const generatedStockNum = useRef<HTMLInputElement>(null);
-  const generatedProdCode = useRef<HTMLInputElement>(null);
-  const customCheckBox = useRef<HTMLInputElement>(null);
+  const [prodLine, setProdLine] = useState('');
+  const [stockNum, setStockNum] = useState('Loading...');
+  const [prodCode, setProdCode] = useState('');
+  const [lockedPCode, setLockedPCode] = useState(false);
 
   useEffect(() => {
     if (props.nextStockNumber != 0) {
-      generatedStockNum.current!.value = props.nextStockNumber.toString();
+      setStockNum(props.nextStockNumber.toString());
     }
-  }, [props.nextStockNumber]);
 
-  const checkBoxHandler = () => {
-    setReadOnly(!customCheckBox.current!.checked);
+    if (prodLine.length === 3 && stockNum) {
+      setProdCode(`${prodLine.toUpperCase()}-0${stockNum}`);
+    } else {
+      setProdCode('');
+    }
+
+    setReadOnly(!lockedPCode);
+  }, [props.nextStockNumber, prodLine, stockNum, lockedPCode]);
+
+  const checkBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLockedPCode(e.target.checked);
   };
 
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const stockNumber = generatedStockNum.current!.value;
-    const productCode = generatedProdCode.current!.value;
-    const enteredProductLine = enteredProdLine.current!.value.toUpperCase();
-    const typical = !customCheckBox.current!.checked;
+    const stockNumber = stockNum;
+    const productCode = prodCode;
+    const enteredProductLine = prodLine.toUpperCase();
+    const typical = !lockedPCode;
     const user = session?.user!.name;
 
     const numberData = {
@@ -56,8 +64,8 @@ const NewNumberForm: React.FC<{
 
     props.onAddNumber(numberData);
 
-    enteredProdLine.current!.value = '';
-    generatedProdCode.current!.value = '';
+    setProdLine('');
+    setProdCode('');
 
     setStatusVisible(true);
 
@@ -66,21 +74,12 @@ const NewNumberForm: React.FC<{
     }, 5000);
   };
 
-  const onProdLineChangeHandler = () => {
-    if (
-      enteredProdLine.current!.value.length === 3 &&
-      generatedStockNum.current!.value
-    ) {
-      generatedProdCode.current!.value = `${enteredProdLine.current!.value.toUpperCase()}-0${
-        generatedStockNum.current!.value
-      }`;
-    } else {
-      generatedProdCode.current!.value = '';
-    }
+  const onProdLineChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProdLine(e.target.value);
   };
 
   const copyButtonHandler = () => {
-    navigator.clipboard.writeText(generatedProdCode.current!.value);
+    navigator.clipboard.writeText(prodCode);
   };
 
   return (
@@ -89,7 +88,7 @@ const NewNumberForm: React.FC<{
         <Control>
           <label htmlFor="prodLine">Product Line</label>
           <NumberInput
-            ref={enteredProdLine}
+            value={prodLine}
             id="prodLine"
             type="text"
             size={5}
@@ -103,12 +102,11 @@ const NewNumberForm: React.FC<{
         <Control>
           <label htmlFor="nextStockNum">Next Stock Number</label>
           <NumberInput
-            ref={generatedStockNum}
+            value={stockNum}
             style={{ cursor: 'not-allowed' }}
             id="nextStockNum"
             type="text"
             size={10}
-            defaultValue="Loading..."
             readOnly
           />
         </Control>
@@ -116,7 +114,7 @@ const NewNumberForm: React.FC<{
           <label htmlFor="newProdCode">Product Code</label>
           <InputWrapper>
             <NumberInput
-              ref={generatedProdCode}
+              value={prodCode}
               id="newProdCode"
               style={{ cursor: readOnly ? 'not-allowed' : 'text' }}
               type="text"
@@ -131,8 +129,8 @@ const NewNumberForm: React.FC<{
           <CustomCheck
             id="customCheck"
             type="checkbox"
+            checked={lockedPCode}
             onChange={checkBoxHandler}
-            ref={customCheckBox}
           />
           <label htmlFor="customCheck">Custom Product Code</label>
         </Control>

@@ -20,10 +20,6 @@ const StockNumberContextProvider: React.FC<PropsWithChildren> = (props) => {
     fetch('/api/current-number')
       .then((res) => res.json())
       .then((json) => setCurrentNumber(json.result));
-
-    return () => {
-      console.log('Context useEffect');
-    };
   }, []);
 
   const incrementHandler = () => {

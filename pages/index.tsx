@@ -5,12 +5,17 @@ import Header from '@/components/Header';
 import { StockNumberContext } from '@/context/context';
 import NewNumberForm from '@/components/Numbers/NewNumberForm';
 
+interface StatusProps {
+  success: boolean;
+  message: string;
+}
+
 const Home: React.FC<{ currentNumber: number }> = () => {
   const StockNumberCtx = useContext(StockNumberContext);
-  const [postStatus, setPostStatus] = useState<{
-    success: boolean;
-    message: string;
-  }>({ success: false, message: '' });
+  const [postStatus, setPostStatus] = useState<StatusProps>({
+    success: false,
+    message: '',
+  });
 
   const addNumberHandler = async (enteredNumberData: {}) => {
     setPostStatus({ success: false, message: '' });

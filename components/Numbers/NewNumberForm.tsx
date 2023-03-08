@@ -6,6 +6,7 @@ import { faClipboard } from '@fortawesome/free-regular-svg-icons';
 
 import Card from '../UI/Card';
 import Button from '../UI/Button';
+import FormStatus from './FormStatus';
 import { COLORS } from '@/styles/constants';
 
 interface FormProps {
@@ -14,22 +15,18 @@ interface FormProps {
   onAddNumber: (numberData: {}) => void;
 }
 
-interface StatusProps {
-  status: boolean;
-}
-
 const NewNumberForm: React.FC<FormProps> = ({
   nextStockNumber,
   postStatus,
   onAddNumber,
 }) => {
   const { data: session } = useSession();
-  const [statusVisible, setStatusVisible] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
   const [prodLine, setProdLine] = useState('');
   const [stockNum, setStockNum] = useState('Loading...');
   const [prodCode, setProdCode] = useState('');
   const [lockedPCode, setLockedPCode] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     if (nextStockNumber != 0) {
@@ -73,12 +70,11 @@ const NewNumberForm: React.FC<FormProps> = ({
 
     setProdLine('');
     setProdCode('');
-
-    setStatusVisible(true);
+    setSubmitted(true);
 
     setTimeout(() => {
-      setStatusVisible(false);
-    }, 5000);
+      setSubmitted(false);
+    }, 1000);
   };
 
   const onProdLineChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -146,21 +142,19 @@ const NewNumberForm: React.FC<FormProps> = ({
           />
           <label htmlFor="customCheck">Custom Product Code</label>
         </Control>
-        <Actions>
-          <SubmitBtn onClick={submitHandler}>Add Stock Number</SubmitBtn>
-        </Actions>
       </NumberForm>
-      {statusVisible && (
-        <StatusContainer status={postStatus.success}>
-          {postStatus.message}
-        </StatusContainer>
-      )}
+      <StatusContainer>
+        <FormStatus status={postStatus} submitted={submitted} />
+      </StatusContainer>
+      <Actions>
+        <SubmitBtn onClick={submitHandler}>Add Stock Number</SubmitBtn>
+      </Actions>
     </Card>
   );
 };
 
 const NumberForm = styled.form`
-  position: relative;
+  position: flex;
 `;
 
 const Control = styled.div`
@@ -177,7 +171,6 @@ const InputWrapper = styled.div`
 `;
 
 const NumberInput = styled.input`
-  font: inherit;
   padding: 0.35rem;
   border-radius: 4px;
   background-color: ${COLORS.blueGray50};
@@ -192,8 +185,8 @@ const NumberInput = styled.input`
   }
 
   &:invalid {
-    background-color: ${COLORS.alert100};
-    outline-color: ${COLORS.alert900};
+    background-color: ${COLORS.error100};
+    outline-color: ${COLORS.error900};
   }
 `;
 
@@ -215,19 +208,21 @@ const CustomCheck = styled.input`
 `;
 
 const Actions = styled.div`
-  text-align: right;
+  display: flex;
+  flex-grow: 1;
+  justify-content: flex-end;
 `;
 
 const SubmitBtn = styled(Button)`
   font-size: 1.25rem;
 `;
 
-const StatusContainer = styled.div<StatusProps>`
-  position: absolute;
-  bottom: 30px;
-  left: 16px;
+const StatusContainer = styled.div`
+  display: flex;
+  flex-grow: 1;
+  flex-basis: 400px;
+  justify-content: center;
   font-weight: bold;
-  color: ${(p) => (p.status ? 'green' : 'red')};
 `;
 
 export default NewNumberForm;

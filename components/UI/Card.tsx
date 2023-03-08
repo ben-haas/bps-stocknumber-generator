@@ -6,7 +6,8 @@ const Card: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 const Wrapper = styled.div`
-  position: relative;
+  display: flex;
+  flex-wrap: wrap;
   padding: 16px;
   margin: 20px auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);

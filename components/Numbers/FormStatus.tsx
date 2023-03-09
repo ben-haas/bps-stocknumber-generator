@@ -5,9 +5,14 @@ import { COLORS } from '@/styles/constants';
 
 interface StatusProps {
   submitted: boolean;
-  status: {
+  postStatus: {
     success: boolean;
     message: string;
+  };
+  inputStatus: {
+    pLine: boolean;
+    pCode: boolean;
+    form: boolean;
   };
 }
 
@@ -15,23 +20,27 @@ interface StyleProps {
   success: boolean;
 }
 
-const FormStatus: React.FC<StatusProps> = ({ status, submitted }) => {
+const FormStatus: React.FC<StatusProps> = ({
+  inputStatus,
+  postStatus,
+  submitted,
+}) => {
   const [statusVisible, setStatusVisible] = useState(false);
 
   useEffect(() => {
-    if (submitted && status.message != '') {
+    if (submitted && postStatus.message != '') {
       setStatusVisible(true);
 
       setTimeout(() => {
         setStatusVisible(false);
       }, 5000);
     }
-  }, [submitted, status.message]);
+  }, [submitted, postStatus.message]);
 
   return (
     <Wrapper>
       {statusVisible && (
-        <AlertCard success={status.success}>{status.message}</AlertCard>
+        <AlertCard success={postStatus.success}>{postStatus.message}</AlertCard>
       )}
     </Wrapper>
   );

@@ -27,7 +27,11 @@ const NewNumberForm: React.FC<FormProps> = ({
   const [prodCode, setProdCode] = useState('');
   const [lockedPCode, setLockedPCode] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [isValid, setIsValid] = useState({ pLine: false, pCode: false });
+  const [isValid, setIsValid] = useState({
+    pLine: false,
+    pCode: false,
+    form: false,
+  });
 
   useEffect(() => {
     if (nextStockNumber != 0) {
@@ -54,44 +58,47 @@ const NewNumberForm: React.FC<FormProps> = ({
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const stockNumber = stockNum;
-    const productCode = prodCode;
-    const enteredProductLine = prodLine;
-    const typical = !lockedPCode;
-    const user = session?.user!.name;
+    if (isValid.pCode && isValid.pLine) {
+      const stockNumber = stockNum;
+      const productCode = prodCode;
+      const enteredProductLine = prodLine;
+      const typical = !lockedPCode;
+      const user = session?.user!.name;
 
-    const numberData = {
-      stock_number: +stockNumber,
-      product_code: productCode,
-      product_line: enteredProductLine,
-      is_typical: typical,
-      entered_by: user,
-      created_at: new Date(),
-      edited_by: user,
-      last_edited: new Date(),
-    };
+      const numberData = {
+        stock_number: +stockNumber,
+        product_code: productCode,
+        product_line: enteredProductLine,
+        is_typical: typical,
+        entered_by: user,
+        created_at: new Date(),
+        edited_by: user,
+        last_edited: new Date(),
+      };
 
-    onAddNumber(numberData);
+      onAddNumber(numberData);
 
-    setProdLine('');
-    setProdCode('');
-    setSubmitted(true);
+      setProdLine('');
+      setProdCode('');
+      setIsValid({ pLine: false, pCode: false, form: false });
+      setSubmitted(true);
 
-    setTimeout(() => {
-      setSubmitted(false);
-    }, 1000);
+      setTimeout(() => {
+        setSubmitted(false);
+      }, 1000);
+    }
   };
 
   const onProdLineChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setProdLine(e.target.value.toUpperCase());
     if (e.target.value.toUpperCase().match('[A-Z]{3}') === null) {
-      setIsValid({ ...isValid, pLine: false });
+      setIsValid({ ...isValid, pLine: false, form: false });
       setProdCode('');
       return;
     }
 
     setProdCode(`${e.target.value.toUpperCase()}-0${stockNum}`);
-    setIsValid({ ...isValid, pLine: true });
+    setIsValid({ ...isValid, pLine: true, form: true });
   };
 
   const pCodeChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -119,7 +126,7 @@ const NewNumberForm: React.FC<FormProps> = ({
             size={5}
             maxLength={3}
             onChange={onProdLineChangeHandler}
-            required
+            valid={isValid.pLine}
           />
         </Control>
         <Control>
@@ -131,6 +138,7 @@ const NewNumberForm: React.FC<FormProps> = ({
             type="text"
             size={10}
             readOnly
+            valid={true}
           />
         </Control>
         <Control>
@@ -145,6 +153,7 @@ const NewNumberForm: React.FC<FormProps> = ({
               size={12}
               maxLength={10}
               readOnly={readOnly}
+              valid={isValid.pCode}
             />
             <Clipboard icon={faClipboard} onClick={copyButtonHandler} />
           </InputWrapper>
@@ -160,10 +169,16 @@ const NewNumberForm: React.FC<FormProps> = ({
         </Control>
       </NumberForm>
       <StatusContainer>
-        <FormStatus status={postStatus} submitted={submitted} />
+        <FormStatus
+          postStatus={postStatus}
+          inputStatus={isValid}
+          submitted={submitted}
+        />
       </StatusContainer>
       <Actions>
-        <SubmitBtn onClick={submitHandler}>Add Stock Number</SubmitBtn>
+        <SubmitBtn onClick={submitHandler} valid={isValid.form}>
+          Add Stock Number
+        </SubmitBtn>
       </Actions>
     </Card>
   );
@@ -186,24 +201,14 @@ const InputWrapper = styled.div`
   width: max-content;
 `;
 
-const NumberInput = styled.input`
+const NumberInput = styled.input<{ valid: boolean }>`
   padding: 0.35rem;
   border-radius: 4px;
-  background-color: ${COLORS.blueGray50};
-  border: 1px solid ${COLORS.blueGray50};
+  background-color: ${(p) => (p.valid ? COLORS.blueGray50 : COLORS.error100)};
+  border: 1px solid ${(p) => (p.valid ? COLORS.blueGray50 : COLORS.error900)};
   display: block;
   font-size: 1.25rem;
   text-transform: uppercase;
-
-  &:focus {
-    background-color: ${COLORS.secondary_light};
-    outline-color: ${COLORS.primary};
-  }
-
-  &:invalid {
-    background-color: ${COLORS.error100};
-    outline-color: ${COLORS.error900};
-  }
 `;
 
 const Clipboard = styled(FontAwesomeIcon)`
@@ -229,8 +234,16 @@ const Actions = styled.div`
   justify-content: flex-end;
 `;
 
-const SubmitBtn = styled(Button)`
+const SubmitBtn = styled(Button)<{ valid: boolean }>`
   font-size: 1.25rem;
+  background-color: ${(p) => (p.valid ? COLORS.primary : COLORS.blueGray50)};
+  color: ${(p) => (p.valid ? 'white' : 'gray')};
+  cursor: ${(p) => (p.valid ? 'pointer' : 'not-allowed')};
+
+  &:hover {
+    background-color: ${(p) =>
+      p.valid ? COLORS.secondary : COLORS.blueGray50};
+  }
 `;
 
 const StatusContainer = styled.div`

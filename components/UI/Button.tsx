@@ -5,15 +5,19 @@ import { COLORS } from '@/styles/constants';
 
 interface ButtonProps {
   children: ReactNode;
+  className?: string;
   onClick?: React.MouseEventHandler;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, onClick }) => {
-  return <Btn onClick={onClick}>{children}</Btn>;
+const Button: React.FC<ButtonProps> = ({ children, className, onClick }) => {
+  return (
+    <Btn onClick={onClick} className={className}>
+      {children}
+    </Btn>
+  );
 };
 
 const Btn = styled.button`
-  font: inherit;
   background-color: ${COLORS.primary};
   border: 1px solid white;
   color: white;

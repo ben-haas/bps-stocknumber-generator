@@ -26,7 +26,7 @@ const FormStatus: React.FC<StatusProps> = ({ status, submitted }) => {
         setStatusVisible(false);
       }, 5000);
     }
-  }, [submitted]);
+  }, [submitted, status.message]);
 
   return (
     <Wrapper>

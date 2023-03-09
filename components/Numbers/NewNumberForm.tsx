@@ -27,6 +27,7 @@ const NewNumberForm: React.FC<FormProps> = ({
   const [prodCode, setProdCode] = useState('');
   const [lockedPCode, setLockedPCode] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isValid, setIsValid] = useState({ pLine: false, pCode: false });
 
   useEffect(() => {
     if (nextStockNumber != 0) {
@@ -34,9 +35,13 @@ const NewNumberForm: React.FC<FormProps> = ({
     }
 
     if (prodLine.length === 3 && stockNum) {
-      setProdCode(`${prodLine.toUpperCase()}-0${stockNum}`);
+      setIsValid((prevState) => {
+        return { ...prevState, pCode: true };
+      });
     } else {
-      setProdCode('');
+      setIsValid((prevState) => {
+        return { ...prevState, pCode: false };
+      });
     }
 
     setReadOnly(!lockedPCode);
@@ -51,7 +56,7 @@ const NewNumberForm: React.FC<FormProps> = ({
 
     const stockNumber = stockNum;
     const productCode = prodCode;
-    const enteredProductLine = prodLine.toUpperCase();
+    const enteredProductLine = prodLine;
     const typical = !lockedPCode;
     const user = session?.user!.name;
 
@@ -78,11 +83,24 @@ const NewNumberForm: React.FC<FormProps> = ({
   };
 
   const onProdLineChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProdLine(e.target.value);
+    setProdLine(e.target.value.toUpperCase());
+    if (e.target.value.toUpperCase().match('[A-Z]{3}') === null) {
+      setIsValid({ ...isValid, pLine: false });
+      setProdCode('');
+      return;
+    }
+
+    setProdCode(`${e.target.value.toUpperCase()}-0${stockNum}`);
+    setIsValid({ ...isValid, pLine: true });
   };
 
   const pCodeChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProdCode(e.target.value);
+    setProdCode(e.target.value.toUpperCase());
+    if (e.target.value.toUpperCase().match('[A-Z]{3}[-][0-9]{6}') === null) {
+      setIsValid({ ...isValid, pCode: false });
+      return;
+    }
+    setIsValid({ ...isValid, pCode: true });
   };
 
   const copyButtonHandler = () => {
@@ -100,8 +118,6 @@ const NewNumberForm: React.FC<FormProps> = ({
             type="text"
             size={5}
             maxLength={3}
-            pattern="[a-z]{3,3}"
-            title="Exactly 3 Letters"
             onChange={onProdLineChangeHandler}
             required
           />

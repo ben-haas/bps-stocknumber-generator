@@ -48,8 +48,12 @@ const NewNumberForm: React.FC<FormProps> = ({
       const stockNumber = stockNum;
       const productCode = prodCode;
       const enteredProductLine = prodLine;
-      const typical = !lockedPCode;
+      let typical = !lockedPCode;
       const user = session?.user!.name;
+
+      if (prodCode === `${prodLine}-0${stockNum}` && lockedPCode) {
+        typical = true;
+      }
 
       const numberData = {
         stock_number: +stockNumber,
@@ -66,7 +70,8 @@ const NewNumberForm: React.FC<FormProps> = ({
 
       setProdLine('');
       setProdCode('');
-      setIsValid({ pLine: false, pCode: false, form: false });
+      setLockedPCode(false);
+      setIsValid({ pLine: true, pCode: true, form: false });
       setSubmitted(true);
 
       setTimeout(() => {
@@ -108,6 +113,11 @@ const NewNumberForm: React.FC<FormProps> = ({
   const checkBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (lockedPCode && !e.target.checked && prodLine != '') {
       setProdCode(`${prodLine}-0${stockNum}`);
+      setIsValid({ ...isValid, pCode: true });
+    }
+
+    if (lockedPCode && !e.target.checked && prodLine === '') {
+      setProdCode('');
       setIsValid({ ...isValid, pCode: true });
     }
 

@@ -19,12 +19,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       client.close();
 
-      const currentNumber = data[0].data.stock_number;
+      const lastEntry = data[0];
 
       res.status(200).json({
         success: true,
         message: 'Current Number Retrieved',
-        result: currentNumber,
+        result: lastEntry,
       });
     } catch (e: any) {
       res.json({ success: false, message: e.message, err: e });

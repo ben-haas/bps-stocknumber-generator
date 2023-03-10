@@ -58,7 +58,7 @@ const StockNumberContextProvider: React.FC<PropsWithChildren> = (props) => {
     };
 
     getLastEntry();
-  }, []);
+  }, [currentNumber]);
 
   const incrementHandler = () => {
     setCurrentNumber((n) => n + 1);

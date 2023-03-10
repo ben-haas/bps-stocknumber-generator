@@ -41,10 +41,6 @@ const NewNumberForm: React.FC<FormProps> = ({
     setReadOnly(!lockedPCode);
   }, [nextStockNumber, lockedPCode]);
 
-  const checkBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLockedPCode(e.target.checked);
-  };
-
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -97,11 +93,25 @@ const NewNumberForm: React.FC<FormProps> = ({
       setIsValid({ ...isValid, pCode: false });
       return;
     }
+
+    if (e.target.value.toUpperCase().substring(0, 3) != prodLine) {
+      setIsValid({ ...isValid, pCode: false });
+      return;
+    }
     setIsValid({ ...isValid, pCode: true });
   };
 
   const copyButtonHandler = () => {
     navigator.clipboard.writeText(prodCode);
+  };
+
+  const checkBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (lockedPCode && !e.target.checked && prodLine != '') {
+      setProdCode(`${prodLine}-0${stockNum}`);
+      setIsValid({ ...isValid, pCode: true });
+    }
+
+    setLockedPCode(e.target.checked);
   };
 
   return (

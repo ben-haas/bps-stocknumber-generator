@@ -1,8 +1,13 @@
-import { PropsWithChildren } from 'react';
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-const Card: React.FC<PropsWithChildren> = ({ children }) => {
-  return <Wrapper>{children}</Wrapper>;
+interface CardProps {
+  children: ReactNode;
+  className?: string;
+}
+
+const Card: React.FC<CardProps> = ({ children, className }) => {
+  return <Wrapper className={className}>{children}</Wrapper>;
 };
 
 const Wrapper = styled.div`

@@ -19,7 +19,7 @@ const NumberDetail: React.FC<DetailProps> = ({ numberData }) => {
   );
 
   return (
-    <Card>
+    <DetailCard>
       <Wrapper>
         <h3>Stock Number</h3>
         <p>{numberData.stockNumber}</p>
@@ -32,10 +32,13 @@ const NumberDetail: React.FC<DetailProps> = ({ numberData }) => {
         <h3>Created At</h3>
         <p>{createdDate}</p>
       </Wrapper>
-    </Card>
+    </DetailCard>
   );
 };
 
+const DetailCard = styled(Card)`
+  justify-content: center;
+`;
 const Wrapper = styled.div`
   text-align: center;
 `;

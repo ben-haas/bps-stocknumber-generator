@@ -28,8 +28,8 @@ const NewNumberForm: React.FC<FormProps> = ({
   const [lockedPCode, setLockedPCode] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isValid, setIsValid] = useState({
-    pLine: false,
-    pCode: false,
+    pLine: true,
+    pCode: true,
     form: false,
   });
 
@@ -38,18 +38,8 @@ const NewNumberForm: React.FC<FormProps> = ({
       setStockNum(nextStockNumber.toString());
     }
 
-    if (prodLine.length === 3 && stockNum) {
-      setIsValid((prevState) => {
-        return { ...prevState, pCode: true };
-      });
-    } else {
-      setIsValid((prevState) => {
-        return { ...prevState, pCode: false };
-      });
-    }
-
     setReadOnly(!lockedPCode);
-  }, [nextStockNumber, prodLine, stockNum, lockedPCode]);
+  }, [nextStockNumber, lockedPCode]);
 
   const checkBoxHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLockedPCode(e.target.checked);
@@ -98,7 +88,7 @@ const NewNumberForm: React.FC<FormProps> = ({
     }
 
     setProdCode(`${e.target.value.toUpperCase()}-0${stockNum}`);
-    setIsValid({ ...isValid, pLine: true, form: true });
+    setIsValid({ pLine: true, pCode: true, form: true });
   };
 
   const pCodeChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {

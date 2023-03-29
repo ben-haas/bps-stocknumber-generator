@@ -28,6 +28,9 @@ const Header = () => {
             <StyledLink href={'/numbers'}>View Items</StyledLink>
           </li>
           <li>
+            <StyledLink href={'/upload'}>Upload</StyledLink>
+          </li>
+          <li>
             <Button onClick={signOutHandler}>Logout</Button>
           </li>
         </ul>

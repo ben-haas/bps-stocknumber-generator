@@ -1,9 +1,6 @@
 import { useState } from 'react';
-import * as fs from 'fs';
-import { parse } from 'csv-parse';
 import styled from 'styled-components';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClipboard } from '@fortawesome/free-regular-svg-icons';
+import ParseCSV from '@/utils/ParseCSV';
 
 import Card from '../UI/Card';
 import Button from '../UI/Button';
@@ -33,6 +30,19 @@ const NumberUpload = () => {
     const fileSize = (size / 1000).toFixed(2);
     setFileLabel(`${name} - ${fileSize}kb`);
     setIsValidFile(true);
+
+    const reader = new FileReader();
+    reader.addEventListener(
+      'load',
+      () => {
+        const csvData = reader.result;
+        const formattedData = ParseCSV(csvData as string);
+        console.log(formattedData);
+      },
+      false
+    );
+
+    reader.readAsText(file);
   };
 
   return (
@@ -47,8 +57,13 @@ const NumberUpload = () => {
           />
           <FileInputLabel htmlFor="file">Upload CSV</FileInputLabel>
           <FileName valid={isValidFile}>{fileLabel}</FileName>
+          <TemplateButton show={isValidFile}>Download Template</TemplateButton>
         </UploadWrapper>
-        <FormattedData type="text-area" readOnly />
+        <FormattedData
+          show={isValidFile}
+          type="text-area"
+          readOnly
+        ></FormattedData>
       </Wrapper>
     </Card>
   );
@@ -102,7 +117,12 @@ const FileName = styled.p<{ valid: boolean }>`
   white-space: nowrap;
 `;
 
-const FormattedData = styled.input`
+const TemplateButton = styled(Button)<{ show: boolean }>`
+  display: ${(p) => (p.show ? 'none' : 'block')};
+`;
+
+const FormattedData = styled.input<{ show: boolean }>`
+  display: ${(p) => (p.show ? 'block' : 'none')};
   width: 100%;
   min-height: 100px;
 `;

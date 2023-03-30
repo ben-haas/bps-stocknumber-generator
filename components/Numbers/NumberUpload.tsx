@@ -37,7 +37,6 @@ const NumberUpload = () => {
       () => {
         const csvData = reader.result;
         const formattedData = ParseCSV(csvData as string);
-        console.log(formattedData);
       },
       false
     );
@@ -59,11 +58,7 @@ const NumberUpload = () => {
           <FileName valid={isValidFile}>{fileLabel}</FileName>
           <TemplateButton show={isValidFile}>Download Template</TemplateButton>
         </UploadWrapper>
-        <FormattedData
-          show={isValidFile}
-          type="text-area"
-          readOnly
-        ></FormattedData>
+        <FormattedData show={isValidFile} type="text-area" readOnly />
       </Wrapper>
     </Card>
   );

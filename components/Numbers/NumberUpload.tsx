@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import ParseCSV from '@/utils/ParseCSV';
 
@@ -9,6 +9,14 @@ import { COLORS } from '@/styles/constants';
 const NumberUpload = () => {
   const [fileLabel, setFileLabel] = useState('');
   const [isValidFile, setIsValidFile] = useState(false);
+  const [parsedUpload, setParsedUpload] = useState({});
+  const [scrollHeight, setScrollHeight] = useState(0);
+
+  useEffect(() => {
+    const textNode = document.querySelector('textarea');
+    textNode!.value = JSON.stringify(parsedUpload, null, 2);
+    setScrollHeight(textNode!.scrollHeight);
+  }, [parsedUpload]);
 
   const fileInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = Array.from(e.target.files!)[0];
@@ -37,11 +45,17 @@ const NumberUpload = () => {
       () => {
         const csvData = reader.result;
         const formattedData = ParseCSV(csvData as string);
+        setParsedUpload(formattedData);
       },
       false
     );
 
     reader.readAsText(file);
+  };
+
+  const dataChangeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const scrollHeight = e.target.scrollHeight;
+    e.target.style.height = scrollHeight + 'px';
   };
 
   return (
@@ -56,9 +70,20 @@ const NumberUpload = () => {
           />
           <FileInputLabel htmlFor="file">Upload CSV</FileInputLabel>
           <FileName valid={isValidFile}>{fileLabel}</FileName>
-          <TemplateButton show={isValidFile}>Download Template</TemplateButton>
+          <TemplateLink
+            href="/UploadTemplate.csv"
+            download="UploadTemplate"
+            show={isValidFile}
+          >
+            <Button>Download Template</Button>
+          </TemplateLink>
         </UploadWrapper>
-        <FormattedData show={isValidFile} type="text-area" readOnly />
+        <FormattedData
+          id="formattedDataContainer"
+          show={isValidFile}
+          scrollHeight={scrollHeight}
+          readOnly
+        />
       </Wrapper>
     </Card>
   );
@@ -112,12 +137,16 @@ const FileName = styled.p<{ valid: boolean }>`
   white-space: nowrap;
 `;
 
-const TemplateButton = styled(Button)<{ show: boolean }>`
+const TemplateLink = styled.a<{ show: boolean }>`
   display: ${(p) => (p.show ? 'none' : 'block')};
 `;
 
-const FormattedData = styled.input<{ show: boolean }>`
+const FormattedData = styled.textarea<{ show: boolean; scrollHeight: number }>`
   display: ${(p) => (p.show ? 'block' : 'none')};
   width: 100%;
   min-height: 100px;
+  height: ${(p) => p.scrollHeight}px;
+  max-height: 70vh;
+  resize: none;
+  overflow: visible;
 `;

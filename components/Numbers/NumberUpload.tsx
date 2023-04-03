@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import styled from 'styled-components';
 import ParseCSV from '@/utils/ParseCSV';
 
@@ -6,10 +7,26 @@ import Card from '../UI/Card';
 import Button from '../UI/Button';
 import { COLORS } from '@/styles/constants';
 
-const NumberUpload = () => {
+interface UploadProps {
+  onAddNumbers: (uploadedNumberData: {}) => void;
+}
+
+interface ParsedData {
+  status: string;
+  message: string;
+  entries: {
+    product_code: string;
+    product_line: string;
+    stock_number: number;
+    is_typical: boolean;
+  }[];
+}
+
+const NumberUpload: React.FC<UploadProps> = ({ onAddNumbers }) => {
+  const { data: session } = useSession();
   const [fileLabel, setFileLabel] = useState('');
   const [isValidFile, setIsValidFile] = useState(false);
-  const [parsedUpload, setParsedUpload] = useState({});
+  const [parsedUpload, setParsedUpload] = useState({} as ParsedData);
   const [scrollHeight, setScrollHeight] = useState(0);
 
   useEffect(() => {
@@ -53,9 +70,26 @@ const NumberUpload = () => {
     reader.readAsText(file);
   };
 
-  const dataChangeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const scrollHeight = e.target.scrollHeight;
-    e.target.style.height = scrollHeight + 'px';
+  const submitHandler = () => {
+    const baseData = parsedUpload.entries;
+
+    const numberData = baseData.map((entry: any) => {
+      return {
+        data: {
+          stock_number: +entry.stock_number,
+          product_code: entry.product_code,
+          product_line: entry.product_line,
+          is_typical: entry.is_typical,
+          entered_by: session?.user!.name,
+          created_at: new Date(),
+          edited_by: session?.user!.name,
+          last_edited: new Date(),
+        },
+      };
+    });
+
+    //console.log(JSON.stringify(numberData, null, 2));
+    onAddNumbers(numberData);
   };
 
   return (
@@ -77,6 +111,9 @@ const NumberUpload = () => {
           >
             <Button>Download Template</Button>
           </TemplateLink>
+          <AddButton show={isValidFile} onClick={submitHandler}>
+            Add Numbers
+          </AddButton>
         </UploadWrapper>
         <FormattedData
           id="formattedDataContainer"
@@ -138,11 +175,16 @@ const FileName = styled.p<{ valid: boolean }>`
 `;
 
 const TemplateLink = styled.a<{ show: boolean }>`
-  display: ${(p) => (p.show ? 'none' : 'block')};
+  display: ${(p) => (p.show ? 'none' : 'revert')};
+`;
+
+const AddButton = styled(Button)<{ show: boolean }>`
+  display: ${(p) => (p.show ? 'revert' : 'none')};
+  margin-top: 1rem;
 `;
 
 const FormattedData = styled.textarea<{ show: boolean; scrollHeight: number }>`
-  display: ${(p) => (p.show ? 'block' : 'none')};
+  display: ${(p) => (p.show ? 'revert' : 'none')};
   width: 100%;
   min-height: 100px;
   height: ${(p) => p.scrollHeight}px;

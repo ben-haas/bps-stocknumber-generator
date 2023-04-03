@@ -5,6 +5,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'POST') {
     try {
       const data = req.body;
+      console.log(data);
 
       const client = await MongoClient.connect(
         process.env.MONGODB_URI as string
@@ -12,9 +13,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const db = client.db('StockNumbers');
       const numbersCollection = db.collection('numbers');
 
-      const result = await numbersCollection.insertOne({ data });
+      const result = await numbersCollection.insertMany(data);
+      let ids = result.insertedIds;
 
       client.close();
+
+      console.log(`${result.insertedCount} documents were inserted.`);
+      for (let id of Object.values(ids)) {
+        console.log(`Inserted a document with id ${id}`);
+      }
 
       res.status(201).json({
         success: true,

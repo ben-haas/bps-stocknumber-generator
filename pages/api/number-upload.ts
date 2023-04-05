@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       res.status(201).json({
         success: true,
-        message: `Stock Number ${data.stock_number} Created`,
+        message: `Stock Numbers Created`,
         result: result,
       });
     } catch (e: any) {

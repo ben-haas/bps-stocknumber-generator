@@ -51,7 +51,10 @@ const StockNumberContextProvider: React.FC<PropsWithChildren> = (props) => {
       const data = await fetch('/api/current-number');
       const entry = await data.json();
 
-      console.log(entry);
+      if (!entry.result) {
+        setCurrentNumber(1);
+        return;
+      }
 
       setCurrentNumber(entry.result.data.stock_number);
       setLastEntry(entry.result.data);

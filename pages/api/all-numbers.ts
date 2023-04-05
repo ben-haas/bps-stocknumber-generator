@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
 
       const db = client.db('StockNumbers');
-      const numbersCollection = db.collection('numbers');
+      const numbersCollection = db.collection('stock-numbers-prod');
 
       const data = await numbersCollection
         .find()

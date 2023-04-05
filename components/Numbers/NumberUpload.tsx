@@ -88,7 +88,6 @@ const NumberUpload: React.FC<UploadProps> = ({ onAddNumbers }) => {
       };
     });
 
-    //console.log(JSON.stringify(numberData, null, 2));
     onAddNumbers(numberData);
   };
 

@@ -11,7 +11,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         process.env.MONGODB_URI as string
       );
       const db = client.db('StockNumbers');
-      const numbersCollection = db.collection(process.env.MONGODB_PROD as string);
+      const numbersCollection = db.collection(
+        process.env.MONGODB_COLLECTION as string
+      );
 
       const result = await numbersCollection.insertMany(data);
       let ids = result.insertedIds;

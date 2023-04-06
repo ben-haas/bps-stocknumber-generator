@@ -21,10 +21,10 @@ const FormStatus: React.FC<StatusProps> = ({ postStatus, submitted }) => {
   useEffect(() => {
     if (submitted && postStatus.message != '') {
       setStatusVisible(true);
+    }
 
-      setTimeout(() => {
-        setStatusVisible(false);
-      }, 5000);
+    if (submitted === false) {
+      setStatusVisible(false);
     }
   }, [submitted, postStatus.message]);
 

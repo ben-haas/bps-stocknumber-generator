@@ -36,7 +36,7 @@ export async function getServerSideProps(context: any) {
   const client = await MongoClient.connect(process.env.MONGODB_URI as string);
 
   const db = client.db('StockNumbers');
-  const numbersCollection = db.collection('stock-numbers-prod');
+  const numbersCollection = db.collection('numbers');
   const data = await numbersCollection
     .find({ 'data.stock_number': numberId })
     .toArray();

@@ -20,11 +20,7 @@ interface StyleProps {
   success: boolean;
 }
 
-const FormStatus: React.FC<StatusProps> = ({
-  inputStatus,
-  postStatus,
-  submitted,
-}) => {
+const FormStatus: React.FC<StatusProps> = ({ postStatus, submitted }) => {
   const [statusVisible, setStatusVisible] = useState(false);
 
   useEffect(() => {

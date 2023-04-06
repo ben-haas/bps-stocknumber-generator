@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         process.env.MONGODB_URI as string
       );
       const db = client.db('StockNumbers');
-      const numbersCollection = db.collection('stock-numbers-prod');
+      const numbersCollection = db.collection(process.env.MONGODB_PROD as string);
 
       const result = await numbersCollection.insertOne({ data });
 

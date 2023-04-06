@@ -73,10 +73,6 @@ const NewNumberForm: React.FC<FormProps> = ({
       setLockedPCode(false);
       setIsValid({ pLine: true, pCode: true, form: false });
       setSubmitted(true);
-
-      setTimeout(() => {
-        setSubmitted(false);
-      }, 1000);
     }
   };
 
@@ -87,6 +83,7 @@ const NewNumberForm: React.FC<FormProps> = ({
       setProdCode('');
       return;
     }
+    setSubmitted(false);
 
     setProdCode(`${e.target.value.toUpperCase()}-0${stockNum}`);
     setIsValid({ pLine: true, pCode: true, form: true });
@@ -179,11 +176,7 @@ const NewNumberForm: React.FC<FormProps> = ({
         </Control>
       </NumberForm>
       <StatusContainer>
-        <FormStatus
-          postStatus={postStatus}
-          inputStatus={isValid}
-          submitted={submitted}
-        />
+        <FormStatus postStatus={postStatus} submitted={submitted} />
       </StatusContainer>
       <Actions>
         <SubmitBtn onClick={submitHandler} valid={isValid.form}>

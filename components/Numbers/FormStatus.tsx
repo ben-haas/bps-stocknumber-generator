@@ -9,31 +9,22 @@ interface StatusProps {
     success: boolean;
     message: string;
   };
-  inputStatus: {
-    pLine: boolean;
-    pCode: boolean;
-    form: boolean;
-  };
 }
 
 interface StyleProps {
   success: boolean;
 }
 
-const FormStatus: React.FC<StatusProps> = ({
-  inputStatus,
-  postStatus,
-  submitted,
-}) => {
+const FormStatus: React.FC<StatusProps> = ({ postStatus, submitted }) => {
   const [statusVisible, setStatusVisible] = useState(false);
 
   useEffect(() => {
     if (submitted && postStatus.message != '') {
       setStatusVisible(true);
+    }
 
-      setTimeout(() => {
-        setStatusVisible(false);
-      }, 5000);
+    if (submitted === false) {
+      setStatusVisible(false);
     }
   }, [submitted, postStatus.message]);
 

@@ -176,11 +176,7 @@ const NewNumberForm: React.FC<FormProps> = ({
         </Control>
       </NumberForm>
       <StatusContainer>
-        <FormStatus
-          postStatus={postStatus}
-          inputStatus={isValid}
-          submitted={submitted}
-        />
+        <FormStatus postStatus={postStatus} submitted={submitted} />
       </StatusContainer>
       <Actions>
         <SubmitBtn onClick={submitHandler} valid={isValid.form}>

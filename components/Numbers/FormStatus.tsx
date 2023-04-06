@@ -9,11 +9,6 @@ interface StatusProps {
     success: boolean;
     message: string;
   };
-  inputStatus: {
-    pLine: boolean;
-    pCode: boolean;
-    form: boolean;
-  };
 }
 
 interface StyleProps {

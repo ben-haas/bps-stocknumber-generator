@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { COLORS } from '@/styles/constants';
+import { COLORS } from '../styles/constants';
 import Button from './UI/Button';
 
 const Header = () => {
@@ -16,7 +16,13 @@ const Header = () => {
     <Wrapper>
       <div>
         <StyledLink href={'/'}>
-          <Image src="/logo_large.png" alt="logo" width="210" height="75" />
+          <Image
+            src="/logo_large.png"
+            alt="logo"
+            width="210"
+            height="75"
+            priority={true}
+          />
         </StyledLink>
       </div>
       <nav>

@@ -1,9 +1,13 @@
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import { MongoClient } from 'mongodb';
 
 import Header from '@/components/Header';
 import Card from '@/components/UI/Card';
-import NumberTable from '@/components/Numbers/NumberTable';
+
+const DynamicTable = dynamic(() => import('@/components/Numbers/NumberTable'), {
+  loading: () => <p>Loading...</p>,
+});
 
 interface PageProps {
   entries: [
@@ -33,7 +37,7 @@ const AllNumbersPage: React.FC<PageProps> = ({ entries }) => {
       </Head>
       <Header />
       <Card>
-        <NumberTable tableData={entries} />
+        <DynamicTable tableData={entries} />
       </Card>
     </>
   );

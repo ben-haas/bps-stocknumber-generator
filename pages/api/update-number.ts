@@ -15,14 +15,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         process.env.MONGODB_COLLECTION as string
       );
 
-      const filter = { 'data.stock_number': data.stock_number };
+      const filter = { 'data.stock_number': data.numberId };
 
       const updateDoc = {
         $set: {
-          product_line: data.product_line,
-          stock_number: data.stock_number,
-          product_code: data.product_code,
-          last_edited: data.last_edited,
+          data: {
+            product_line: data.newNumberData.product_line,
+            stock_number: data.newNumberData.stock_number,
+            product_code: data.newNumberData.product_code,
+            last_edited: data.newNumberData.last_edited,
+            edited_by: data.newNumberData.edited_by,
+            created_at: data.newNumberData.created_at,
+            entered_by: data.newNumberData.entered_by,
+            is_typical: data.newNumberData.is_typical,
+          },
         },
       };
 
@@ -32,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       res.status(200).json({
         success: true,
-        message: `Stock Number ${data.stock_number} edited`,
+        message: `Stock Number ${data.numberId} edited`,
         result: result,
       });
     } catch (e: any) {

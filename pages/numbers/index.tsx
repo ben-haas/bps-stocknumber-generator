@@ -67,6 +67,7 @@ export async function getServerSideProps() {
     id: entry._id.toString(),
     createdAt: entry.data.created_at,
     lastEdited: entry.data.last_edited,
+    isTypical: entry.data.is_typical,
   }));
 
   return {

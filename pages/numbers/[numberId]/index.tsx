@@ -12,10 +12,30 @@ interface PageProps {
     user: string;
     createdAt: string;
     lastEdited: string;
+    isTypical: boolean;
   };
 }
 
-const editNumberHandler = async (numberId: number) => {};
+const editNumberHandler = async (numberId: number, newNumberData: {}) => {
+  console.log({ numberId, newNumberData });
+  try {
+    const response = await fetch('/api/update-number', {
+      method: 'PUT',
+      body: JSON.stringify({ numberId, newNumberData }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Something went wrong. Refresh the page and try again.');
+    }
+
+    const data = await response.json();
+    console.log(data);
+  } catch (e: any) {
+    console.log(e.message);
+  }
+};
 
 const NumberDetailsPage: React.FC<PageProps> = ({ numberData }) => {
   return (
@@ -56,6 +76,7 @@ export async function getServerSideProps(context: any) {
         user: data[0]?.data.entered_by,
         createdAt: data[0]?.data.created_at,
         lastEdited: data[0]?.data.last_edited,
+        isTypical: data[0]?.data.is_typical,
       },
     },
   };

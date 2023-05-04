@@ -14,17 +14,45 @@ interface DetailProps {
     user: string;
     createdAt: string;
     lastEdited: string;
+    isTypical: boolean;
   };
-  onEditNumber: (numberId: number) => void;
+  onEditNumber: (numberId: number, newNumberData: {}) => void;
 }
 
-const NumberDetail: React.FC<DetailProps> = ({ numberData }) => {
+const NumberDetail: React.FC<DetailProps> = ({ numberData, onEditNumber }) => {
   const [isEditing, setIsEditing] = useState(false);
 
-  const createdDate: string = new Date(numberData.createdAt).toLocaleString(
-    'en-US',
-    { timeStyle: 'short', dateStyle: 'short' }
-  );
+  const formatDate = (date: string) => {
+    const newDate = new Date(date).toLocaleString('en-US', {
+      timeStyle: 'short',
+      dateStyle: 'short',
+    });
+
+    return newDate;
+  };
+
+  const onEditHandler = () => {
+    setIsEditing(true);
+  };
+
+  const onCancelHandler = () => {
+    setIsEditing(false);
+  };
+
+  const onUpdateHandler = () => {
+    if (!isEditing) return;
+    const newData = {
+      stock_number: numberData.stockNumber,
+      product_code: 'ZZZ-024437',
+      product_line: 'ZZZ',
+      last_edited: new Date(),
+      edited_by: 'test',
+      created_at: numberData.createdAt,
+      entered_by: numberData.user,
+      is_typical: numberData.isTypical,
+    };
+    onEditNumber(numberData.stockNumber, newData);
+  };
 
   return (
     <DetailCard>
@@ -38,11 +66,17 @@ const NumberDetail: React.FC<DetailProps> = ({ numberData }) => {
         <h3>Created By</h3>
         <p>{numberData.user}</p>
         <h3>Created At</h3>
-        <p>{createdDate}</p>
+        <p>{formatDate(numberData.createdAt)}</p>
+        <h3>Last Edited</h3>
+        <p>{formatDate(numberData.lastEdited)}</p>
         <ButtonWrapper>
-          <Button>Edit</Button>
-          <CancelButton show={isEditing}>Cancel</CancelButton>
-          <UpdateButton show={isEditing}>Update</UpdateButton>
+          <Button onClick={onEditHandler}>Edit</Button>
+          <CancelButton show={isEditing} onClick={onCancelHandler}>
+            Cancel
+          </CancelButton>
+          <UpdateButton show={isEditing} onClick={onUpdateHandler}>
+            Update
+          </UpdateButton>
         </ButtonWrapper>
       </Wrapper>
     </DetailCard>

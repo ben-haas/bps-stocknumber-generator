@@ -15,6 +15,8 @@ interface PageProps {
   };
 }
 
+const editNumberHandler = async (numberId: number) => {};
+
 const NumberDetailsPage: React.FC<PageProps> = ({ numberData }) => {
   return (
     <>
@@ -25,7 +27,7 @@ const NumberDetailsPage: React.FC<PageProps> = ({ numberData }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <NumberDetail numberData={numberData} />;
+      <NumberDetail numberData={numberData} onEditNumber={editNumberHandler} />;
     </>
   );
 };

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { COLORS } from '../styles/constants';
+import { COLORS } from '@/styles/constants';
 import Button from './UI/Button';
 
 const Header = () => {

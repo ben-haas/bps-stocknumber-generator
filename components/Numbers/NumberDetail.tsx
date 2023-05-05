@@ -26,12 +26,14 @@ interface DetailProps {
     message: string;
   };
   onEditNumber: (numberId: number, newNumberData: {}) => void;
+  onDeleteNumber: (numberId: number) => void;
 }
 
 const NumberDetail: React.FC<DetailProps> = ({
   numberData,
   updateStatus,
   onEditNumber,
+  onDeleteNumber,
 }) => {
   const { data: session } = useSession();
   const [isEditing, setIsEditing] = useState(false);
@@ -63,6 +65,10 @@ const NumberDetail: React.FC<DetailProps> = ({
   };
 
   const onCancelHandler = () => {
+    setProdLine(numberData.productLine);
+    setStockNum(numberData.stockNumber.toString());
+    setProdCode(numberData.productCode);
+    setIsValid({ pLine: true, sNum: true, pCode: true, form: true });
     setIsEditing(false);
     setReadOnly(true);
   };
@@ -81,6 +87,14 @@ const NumberDetail: React.FC<DetailProps> = ({
     };
     onEditNumber(numberData.stockNumber, newData);
     setIsEditing(false);
+    setSubmitted(true);
+  };
+
+  const onDeleteHandler = () => {
+    alert(
+      'Are you sure you want to delete this number? This cannot be undone.'
+    );
+    onDeleteNumber(numberData.stockNumber);
     setSubmitted(true);
   };
 
@@ -207,10 +221,10 @@ const NumberDetail: React.FC<DetailProps> = ({
           <FormStatus postStatus={updateStatus} submitted={submitted} />
         </StatusContainer>
         <NumberInfo>
-          <h4>Created By</h4>
-          <p>{numberData.user}</p>
           <h4>Created At</h4>
           <p>{formatDate(numberData.createdAt)}</p>
+          <h4>Created By</h4>
+          <p>{numberData.user}</p>
           <h4>Last Edited</h4>
           <p>{formatDate(numberData.lastEdited)}</p>
           <h4>Last Edited By</h4>
@@ -220,9 +234,12 @@ const NumberDetail: React.FC<DetailProps> = ({
       <Actions>
         {!isEditing && <Button onClick={onEditHandler}>Edit</Button>}
         {isEditing && (
-          <CancelButton onClick={onCancelHandler}>Cancel</CancelButton>
+          <AlertButton onClick={onCancelHandler}>Cancel</AlertButton>
         )}
         {isEditing && <Button onClick={onUpdateHandler}>Update</Button>}
+        {!isEditing && (
+          <AlertButton onClick={onDeleteHandler}>Delete</AlertButton>
+        )}
       </Actions>
     </DetailCard>
   );
@@ -302,7 +319,7 @@ const Actions = styled.div`
   text-align: center;
 `;
 
-const CancelButton = styled(Button)`
+const AlertButton = styled(Button)`
   background-color: ${COLORS.error900};
   &:hover {
     background-color: ${COLORS.error400};

@@ -40,7 +40,6 @@ const NumberDetailsPage: React.FC<PageProps> = ({ numberData }) => {
   }, [updateStatus.success, push]);
 
   const editNumberHandler = async (numberId: number, newNumberData: {}) => {
-    console.log({ numberId, newNumberData });
     setUpdateStatus({ success: false, message: '' });
     try {
       const response = await fetch('/api/update-number', {
@@ -82,6 +81,46 @@ const NumberDetailsPage: React.FC<PageProps> = ({ numberData }) => {
     }
   };
 
+  const deleteNumberHandler = async (numberId: number) => {
+    setUpdateStatus({ success: false, message: '' });
+    try {
+      const response = await fetch('/api/delete-number', {
+        method: 'DELETE',
+        body: JSON.stringify({ numberId }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          'Something went wrong. Refresh the page and try again.'
+        );
+      }
+
+      const data = await response.json();
+
+      if (!data.success) {
+        setUpdateStatus({
+          success: false,
+          message: data.message,
+        });
+
+        return;
+      }
+
+      setUpdateStatus({
+        success: true,
+        message: data.message,
+      });
+    } catch (e: any) {
+      setUpdateStatus({
+        success: false,
+        message: e.message,
+      });
+    }
+  };
+
   return (
     <>
       <Head>
@@ -95,6 +134,7 @@ const NumberDetailsPage: React.FC<PageProps> = ({ numberData }) => {
         numberData={numberData}
         updateStatus={updateStatus}
         onEditNumber={editNumberHandler}
+        onDeleteNumber={deleteNumberHandler}
       />
       ;
     </>

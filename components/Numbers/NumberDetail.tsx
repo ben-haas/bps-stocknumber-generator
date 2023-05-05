@@ -191,15 +191,17 @@ const NumberDetail: React.FC<DetailProps> = ({
               <Clipboard icon={faClipboard} onClick={copyButtonHandler} />
             </InputWrapper>
           </Control>
-          <CheckBoxControl show={isEditing}>
-            <CustomCheck
-              id="customCheck"
-              type="checkbox"
-              checked={!lockedPCode}
-              onChange={checkBoxHandler}
-            />
-            <label htmlFor="customCheck">Custom Product Code</label>
-          </CheckBoxControl>
+          {isEditing && (
+            <Control>
+              <CustomCheck
+                id="customCheck"
+                type="checkbox"
+                checked={!lockedPCode}
+                onChange={checkBoxHandler}
+              />
+              <label htmlFor="customCheck">Custom Product Code</label>
+            </Control>
+          )}
         </NumberForm>
         <StatusContainer>
           <FormStatus postStatus={updateStatus} submitted={submitted} />
@@ -216,13 +218,11 @@ const NumberDetail: React.FC<DetailProps> = ({
         </NumberInfo>
       </InfoWrapper>
       <Actions>
-        <Button onClick={onEditHandler}>Edit</Button>
-        <CancelButton show={isEditing} onClick={onCancelHandler}>
-          Cancel
-        </CancelButton>
-        <UpdateButton show={isEditing} onClick={onUpdateHandler}>
-          Update
-        </UpdateButton>
+        {!isEditing && <Button onClick={onEditHandler}>Edit</Button>}
+        {isEditing && (
+          <CancelButton onClick={onCancelHandler}>Cancel</CancelButton>
+        )}
+        {isEditing && <Button onClick={onUpdateHandler}>Update</Button>}
       </Actions>
     </DetailCard>
   );
@@ -275,10 +275,6 @@ const Clipboard = styled(FontAwesomeIcon)`
   cursor: pointer;
 `;
 
-const CheckBoxControl = styled(Control)<{ show: boolean }>`
-  display: ${(props) => (props.show ? 'revert' : 'none')};
-`;
-
 const CustomCheck = styled.input`
   height: 16px;
   width: 16px;
@@ -306,12 +302,7 @@ const Actions = styled.div`
   text-align: center;
 `;
 
-const UpdateButton = styled(Button)<{ show: boolean }>`
-  display: ${(props) => (props.show ? 'revert' : 'none')};
-`;
-
-const CancelButton = styled(Button)<{ show: boolean }>`
-  display: ${(props) => (props.show ? 'revert' : 'none')};
+const CancelButton = styled(Button)`
   background-color: ${COLORS.error900};
   &:hover {
     background-color: ${COLORS.error400};

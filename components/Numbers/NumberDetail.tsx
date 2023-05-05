@@ -207,10 +207,10 @@ const NumberDetail: React.FC<DetailProps> = ({
           <FormStatus postStatus={updateStatus} submitted={submitted} />
         </StatusContainer>
         <NumberInfo>
-          <h4>Created By</h4>
-          <p>{numberData.user}</p>
           <h4>Created At</h4>
           <p>{formatDate(numberData.createdAt)}</p>
+          <h4>Created By</h4>
+          <p>{numberData.user}</p>
           <h4>Last Edited</h4>
           <p>{formatDate(numberData.lastEdited)}</p>
           <h4>Last Edited By</h4>

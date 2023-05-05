@@ -91,7 +91,7 @@ const NumberDetail: React.FC<DetailProps> = ({
   };
 
   const onDeleteHandler = () => {
-    alert(
+    confirm(
       'Are you sure you want to delete this number? This cannot be undone.'
     );
     onDeleteNumber(numberData.stockNumber);

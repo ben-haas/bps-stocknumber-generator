@@ -16,7 +16,13 @@ const Header = () => {
     <Wrapper>
       <div>
         <StyledLink href={'/'}>
-          <Image src="/logo_large.png" alt="logo" width="210" height="75" />
+          <Image
+            src="/logo_large.png"
+            alt="logo"
+            width="210"
+            height="75"
+            priority={true}
+          />
         </StyledLink>
       </div>
       <nav>

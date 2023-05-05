@@ -40,7 +40,6 @@ const FormStatus: React.FC<StatusProps> = ({ postStatus, submitted }) => {
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   padding: 0 10px;
 `;
 
@@ -49,6 +48,7 @@ const AlertCard = styled.div<StyleProps>`
   justify-content: center;
   align-items: center;
   flex-basis: 50px;
+  padding: 0 10px;
   color: ${(p) => (p.success ? COLORS.success900 : COLORS.error900)};
   background-color: ${(p) => (p.success ? COLORS.success100 : COLORS.error100)};
   border-radius: 10px;

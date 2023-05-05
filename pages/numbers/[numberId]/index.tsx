@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { MongoClient } from 'mongodb';
 
@@ -12,10 +14,74 @@ interface PageProps {
     user: string;
     createdAt: string;
     lastEdited: string;
+    editedBy: string;
+    isTypical: boolean;
   };
 }
 
+interface StatusProps {
+  success: boolean;
+  message: string;
+}
+
 const NumberDetailsPage: React.FC<PageProps> = ({ numberData }) => {
+  const [updateStatus, setUpdateStatus] = useState<StatusProps>({
+    success: false,
+    message: '',
+  });
+  const { push } = useRouter();
+
+  useEffect(() => {
+    if (updateStatus.success) {
+      setTimeout(() => {
+        push('/numbers');
+      }, 2000);
+    }
+  }, [updateStatus.success, push]);
+
+  const editNumberHandler = async (numberId: number, newNumberData: {}) => {
+    console.log({ numberId, newNumberData });
+    setUpdateStatus({ success: false, message: '' });
+    try {
+      const response = await fetch('/api/update-number', {
+        method: 'PUT',
+        body: JSON.stringify({ numberId, newNumberData }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          'Something went wrong. Refresh the page and try again.'
+        );
+      }
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (!data.success) {
+        setUpdateStatus({
+          success: false,
+          message: data.message,
+        });
+
+        return;
+      }
+
+      setUpdateStatus({
+        success: true,
+        message: data.message,
+      });
+    } catch (e: any) {
+      setUpdateStatus({
+        success: false,
+        message: e.message,
+      });
+    }
+  };
+
   return (
     <>
       <Head>
@@ -25,7 +91,12 @@ const NumberDetailsPage: React.FC<PageProps> = ({ numberData }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <NumberDetail numberData={numberData} />;
+      <NumberDetail
+        numberData={numberData}
+        updateStatus={updateStatus}
+        onEditNumber={editNumberHandler}
+      />
+      ;
     </>
   );
 };
@@ -54,6 +125,8 @@ export async function getServerSideProps(context: any) {
         user: data[0]?.data.entered_by,
         createdAt: data[0]?.data.created_at,
         lastEdited: data[0]?.data.last_edited,
+        editedBy: data[0]?.data.edited_by,
+        isTypical: data[0]?.data.is_typical,
       },
     },
   };
